@@ -1,13 +1,11 @@
 import type { NextConfig } from "next";
 
+// Only Netlify (plain Next.js) needs the shim; the Cloudflare/vinext build
+// resolves `cloudflare:workers` natively.
 const shim = "./lib/cloudflare-workers-shim.ts";
 
-const nextConfig: NextConfig = {
-  turbopack: { resolveAlias: { "cloudflare:workers": shim } },
-  webpack(config) {
-    config.resolve.alias["cloudflare:workers"] = new URL(shim, import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
-    return config;
-  },
-};
+const nextConfig: NextConfig = process.env.NETLIFY
+  ? { turbopack: { resolveAlias: { "cloudflare:workers": shim } } }
+  : {};
 
 export default nextConfig;
