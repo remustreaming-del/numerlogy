@@ -6,20 +6,22 @@ import { timingSafeEqual } from "node:crypto";
 
 export function setting(key: string) { return (env as Record<string, unknown>)[key] as string | undefined; }
 export function paymentReady() { return setting("PAYMENTS_ENABLED") === "true" && ["QPAY_CLIENT_ID", "QPAY_CLIENT_SECRET", "QPAY_INVOICE_CODE", "PUBLIC_ORIGIN"].every(key => !!setting(key)); }
-export function price() { const amount = Number(setting("REPORT_PRICE_MNT") || "19900"); if (!Number.isSafeInteger(amount) || amount <= 0) throw new Error("Invalid price configuration"); return amount; }
+// Single fixed price for every report; not configurable at runtime.
+export const PRICE_MNT = 5000;
+export function price() { return PRICE_MNT; }
 export function json(data: unknown, status = 200) { return Response.json(data, { status, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } }); }
 export async function hash(value: string) { return Buffer.from(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))).toString("hex"); }
 export async function matches(value: string, expected: string) { const actual = await hash(value); return timingSafeEqual(Buffer.from(actual), Buffer.from(expected)); }
 export function sameOrigin(req: Request) {
-  if (req.headers.get("origin") !== new URL(req.url).origin) throw new Error("Request origin is not allowed.");
+  if (req.headers.get("origin") !== new URL(req.url).origin) throw new Error("Энэ эх үүсвэрээс хүсэлт хүлээн авах боломжгүй.");
 }
 export async function body(req: Request) {
   sameOrigin(req);
-  if (!req.headers.get("content-type")?.includes("application/json")) throw new Error("JSON required.");
+  if (!req.headers.get("content-type")?.includes("application/json")) throw new Error("Мэдээллийн формат буруу байна.");
   const reader = req.body?.getReader();
-  if (!reader) throw new Error("Missing request body.");
+  if (!reader) throw new Error("Хүсэлтийн мэдээлэл дутуу байна.");
   let size = 0; const chunks: Uint8Array[] = [];
-  while (true) { const { done, value } = await reader.read(); if (done) break; size += value.length; if (size > 4096) { await reader.cancel(); throw new Error("Request is too large."); } chunks.push(value); }
+  while (true) { const { done, value } = await reader.read(); if (done) break; size += value.length; if (size > 4096) { await reader.cancel(); throw new Error("Хүсэлтийн хэмжээ хэтэрсэн байна."); } chunks.push(value); }
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
 }
 export async function authorizedOrder(req: Request, id: string) {

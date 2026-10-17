@@ -18,35 +18,38 @@ with sync_playwright() as p:
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.goto(BASE)
     page.wait_for_load_state('networkidle')
-    expect(page.get_by_role('heading', name='Your numbers. Your story.')).to_be_visible()
-    page.get_by_role('button', name='Discover my numbers').click()
-    page.get_by_label('Your full name').fill('Anu')
-    page.get_by_label('Date of birth').fill('1995-06-13')
-    page.get_by_role('button', name='Continue to payment').click()
-    expect(page.get_by_role('heading', name='Try your reading for free')).to_be_visible()
-    page.get_by_role('button', name='Preview my reading').click()
-    expect(page.get_by_text('Your preview is ready')).to_be_visible()
-    expect(page.get_by_role('heading', name='Life path 7')).to_be_visible()
+    expect(page.get_by_role('heading', name='Таны тоонууд. Таны түүх.')).to_be_visible()
+    assert page.locator('html').get_attribute('lang') == 'mn'
+    assert page.locator('.language-switch, #report-language').count() == 0
+    assert page.request.get(BASE + '/api/sample?lang=en').json()['language'] == 'mn'
+    page.get_by_role('button', name='Миний тоог нээх').click()
+    page.get_by_label('Таны бүтэн нэр').fill('Anu')
+    page.get_by_label('Төрсөн огноо').fill('1995-06-13')
+    page.get_by_role('button', name='Төлбөр төлөх').click()
+    expect(page.get_by_role('heading', name='Тайлангаа үнэгүй туршаарай')).to_be_visible()
+    page.get_by_role('button', name='Миний тайланг үзэх').click()
+    expect(page.get_by_text('Туршилтын тайлан бэлэн')).to_be_visible()
+    expect(page.get_by_role('heading', name='Амьдралын зам 7')).to_be_visible()
     with page.expect_download() as event:
-        page.get_by_role('button', name='Download PDF', exact=True).click()
-    event.value.save_as(out / 'browser-en.pdf')
-    doc = pymupdf.open(out / 'browser-en.pdf')
+        page.get_by_role('button', name='PDF татах', exact=True).click()
+    event.value.save_as(out / 'browser-desktop-mn.pdf')
+    doc = pymupdf.open(out / 'browser-desktop-mn.pdf')
     text = ''.join(p.get_text() for p in doc)
-    assert 'Anu' in text and 'The seeker' in text and len(doc) == 2
+    assert 'Anu' in text and 'Эргэцүүлэгч' in text and len(doc) == 2
     # Embedded outlines must exist, not merely invisible searchable characters.
     assert sum(len(p.get_drawings()) for p in doc) > 0
     with page.expect_download() as event:
-        page.get_by_role('button', name='Text file', exact=True).click()
-    event.value.save_as(out / 'browser-en.txt')
-    assert 'Anu' in (out / 'browser-en.txt').read_text(encoding='utf-8-sig')
-    page.get_by_role('button', name='Sample reading', exact=True).click()
+        page.get_by_role('button', name='Текст файл', exact=True).click()
+    event.value.save_as(out / 'browser-desktop-mn.txt')
+    assert 'Anu' in (out / 'browser-desktop-mn.txt').read_text(encoding='utf-8-sig')
+    page.get_by_role('button', name='Жишээ тайлан', exact=True).click()
     expect(page.get_by_role('dialog')).to_be_visible()
     page.keyboard.press('Escape')
     expect(page.get_by_role('dialog')).not_to_be_visible()
-    page.get_by_role('button', name='My reading', exact=True).click()
-    page.get_by_label('Recovery code', exact=True).fill('wrong-code')
-    page.get_by_role('button', name='Find my reading', exact=True).click()
-    expect(page.get_by_role('alert')).to_contain_text('Enter the full recovery code')
+    page.get_by_role('button', name='Миний тайлан', exact=True).click()
+    page.get_by_label('Сэргээх код', exact=True).fill('wrong-code')
+    page.get_by_role('button', name='Тайлангаа олох', exact=True).click()
+    expect(page.get_by_role('alert')).to_contain_text('Сэргээх кодыг бүтнээр оруулна уу')
     page.keyboard.press('Escape')
 
     # Exercise actual server validation and fail-closed checkout.
@@ -76,6 +79,7 @@ with sync_playwright() as p:
         connection.commit()
         response = api.get(url, headers={'Authorization': 'Bearer ' + token})
         assert response.json()['report']['lifePath'] == 7
+        assert response.json()['report']['language'] == 'mn'
     finally:
         connection.execute('DELETE FROM orders WHERE id=?', (order_id,))
         connection.commit()
@@ -85,7 +89,6 @@ with sync_playwright() as p:
     mobile.on('pageerror', lambda error: errors.append(str(error)))
     mobile.goto(BASE)
     mobile.wait_for_load_state('networkidle')
-    mobile.get_by_role('button', name='МН', exact=True).click()
     mobile.screenshot(path=str(out / 'mobile-mn.png'), full_page=True)
     assert mobile.evaluate('document.documentElement.scrollWidth <= innerWidth')
     mobile.get_by_label('Таны бүтэн нэр').fill('Мөнх-Эрдэнэ')
@@ -102,4 +105,4 @@ with sync_playwright() as p:
     assert mobile.evaluate('document.documentElement.scrollWidth <= innerWidth')
     assert not errors, errors
     browser.close()
-    print('PASS: desktop/mobile, two languages, PDF/text downloads, dialogs, input validation, order authorization, payment gating; no browser errors.')
+    print('PASS: desktop/mobile, Mongolian only, PDF/text downloads, dialogs, input validation, order authorization, payment gating; no browser errors.')
