@@ -45,7 +45,12 @@
 - Post-deploy smoke checks passed for `/`, `/etsgiin-kod`, `/natal`, the config API, apex-to-www redirect, and a free natal chart render with its SVG and semantic table.
 - No QPay charge was created during deployment verification.
 
+## Navigation fix · 2026-10-23
+
+- Replaced the product-card and header `next/link` controls with native links after production clicks failed with a vinext client-navigation `TypeError: e is not a function`.
+- Verified on the deployed site that the natal card opens `/natal`, the brand returns home, and the Эцгийн код card opens `/etsgiin-kod`; browser console and page errors were clear.
+- Deployed Worker version `94937053-e8bb-44af-a36d-d85850ff5a20`.
+
 ## Owner review
 
 1. Proofread `outputs/natal-texts-for-review.md`.
-2. Run one QPay sandbox payment and confirm callback, amount, report unlock, Resend delivery, attached PDF, and recovery flow.
