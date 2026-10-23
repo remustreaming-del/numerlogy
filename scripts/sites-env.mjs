@@ -20,3 +20,5 @@ for (const directory of [
 ]) {
   mkdirSync(directory, { recursive: true });
 }
+
+

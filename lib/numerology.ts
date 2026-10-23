@@ -1,56 +1,92 @@
-export type Details = { name: string; birthday: string };
-export type Report = { name: string; birthday: string; year: number; lifePath: number; birthNumber: number; personalYear: number; archetype: string; introduction: string; sections: { title: string; text: string }[]; method: string; preview?: boolean };
+import { numbers, sectionTitles, slots } from "./content.ts";
+import { lifePath, pad, pairHeading, reduce } from "./codes.ts";
+export { lifePath, reduce };
 
-export function reduce(value: number, masters = true): number {
-  while (value > 9 && !(masters && [11, 22, 33].includes(value))) {
-    value = String(value).split("").reduce((sum, digit) => sum + Number(digit), 0);
-  }
+export type Details = { fatherName: string; fatherBirthday: string; name: string; birthday: string; email: string };
+export type ReportInput = Omit<Details, "email">;
+export type Person = { name: string; birthday: string; number: number; title: string };
+export type Section = { title: string; text?: string; items?: { title: string; text: string }[] };
+export type Part = { kicker: string; heading: string; lead?: string; sections: Section[]; note?: string };
+export type Report = { father: Person; child: Person; pairCode: string; pairTitle: string; pairSubtitle: string; quote: string; parts: Part[]; method: string; preview?: boolean };
+
+// Names are optional (the form only asks for birthdays and email); when given they must look like a name.
+function validName(value: unknown, message: string) {
+  if (value === undefined || value === null || (typeof value === "string" && !value.trim())) return "";
+  if (typeof value !== "string" || !/^[\p{L}\p{M} .’'\-]{2,80}$/u.test(value.trim())) throw new Error(message);
+  return value.trim().replace(/\s+/g, " ");
+}
+
+function validDate(value: unknown, message: string) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error(message);
+  const date = new Date(`${value}T00:00:00Z`);
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ulaanbaatar" });
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value || value < "1900-01-01" || value > today) throw new Error(message);
   return value;
 }
 
 export function validateDetails(input: unknown): Details {
-  if (!input || typeof input !== "object") throw new Error("Нэр болон төрсөн огноогоо оруулна уу.");
+  if (!input || typeof input !== "object") throw new Error("Эцэг болон өөрийн мэдээллээ оруулна уу.");
   const data = input as Record<string, unknown>;
-  if (typeof data.name !== "string" || !/^[\p{L}\p{M} .’'\-]{2,80}$/u.test(data.name.trim())) throw new Error("Нэрээ 2–80 үсгээр оруулна уу.");
-  if (typeof data.birthday !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data.birthday)) throw new Error("Төрсөн огноогоо зөв оруулна уу.");
-  const date = new Date(`${data.birthday}T00:00:00Z`);
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ulaanbaatar" });
-  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== data.birthday || data.birthday < "1900-01-01" || data.birthday > today) throw new Error("1900 оноос өнөөдрийг хүртэлх бодит төрсөн огноо сонгоно уу.");
-  return { name: data.name.trim().replace(/\s+/g, " "), birthday: data.birthday };
+  const fatherName = validName(data.fatherName, "Эцгийн нэрийг 2–80 үсгээр оруулна уу.");
+  const fatherBirthday = validDate(data.fatherBirthday, "Эцгийн төрсөн огноог зөв оруулна уу.");
+  const name = validName(data.name, "Өөрийн нэрийг 2–80 үсгээр оруулна уу.");
+  const birthday = validDate(data.birthday, "Өөрийн төрсөн огноог зөв оруулна уу.");
+  if (fatherBirthday >= birthday) throw new Error("Аавын төрсөн огноо таны төрсөн огнооноос өмнө байх ёстой.");
+  const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : "";
+  if (email.length > 254 || !/^[^\s@<>()"',;:]+@[^\s@<>()"',;:]+\.[a-z]{2,}$/i.test(email)) throw new Error("Имэйл хаягаа зөв оруулна уу.");
+  return { fatherName, fatherBirthday, name, birthday, email };
 }
 
-// Interpretive content, not predictions. Name personalizes the report; calculations use the birth date.
-const meanings: Record<number, [string, string, string, string]> = {
-  1: ["Санаачлагч","Бие даах, шинэ санаа гаргах, эхний алхмыг хийх нь танд утга учиртай санагдаж болно.","Бие даах хүсэл тань тусламж хүсэхэд саад болж буй эсэхийг анзаараарай. Хамтын ажиллагаа таны санааг улам хөгжүүлж чадна.","Энэ долоо хоногт эхлүүлж болох жижиг ажил сонгоорой. Амжилтыг өөрийнхөөрөө тодорхойлоод, итгэдэг хүнээсээ санал хүсээрэй."],
-  2: ["Эвлэрүүлэгч","Хамтын ажиллагаа, анхааралтай сонсох, бусдыг ойлгох нь таны эргэцүүлэх сэдэв юм. Өөр өөр үзэл бодлыг сонсох нь танд таатай байж болно.","Эв найрамдлыг хадгалахдаа өөрийн хэрэгцээг нуух шаардлагагүй. Чухал зүйлээ шууд хэлж дадлага хийгээрэй.","Дараагийн яриандаа анхааралтай сонсоод, шууд зөвшөөрөхийн оронд өөрийн нэг хүсэлтийг илэрхийлээрэй."],
-  3: ["Өгүүлэгч","Өөрийгөө илэрхийлэх, бүтээлч байдал, бусадтай холбогдох нь гол сэдэв юм. Үг, зураг, туршлагаар дамжуулан ертөнцөө ойлгож болох юм.","Олон сонирхолтой санаа анхаарлыг тань сарниулж болно. Нэг төгс бус бүтээлээ дуусгах нь олон төгс төлөвлөгөөнөөс илүү үр өгөөжтэй байж болно.","Хорин минут гаргаж бичих, зурах эсвэл ямар нэг зүйл бүтээгээрэй. Юуг илэрхийлэх нь танд таалагдаж байгааг анзаараарай."],
-  4: ["Бүтээгч","Тууштай байдал, бодитой хандлага, тэвчээртэй хөдөлмөр нь энэ тооны сэдэв юм. Санааг бодит, найдвартай зүйл болгох нь танд таатай байж болно.","Дадал хэвшил таныг дэмжих учиртай. Амрах, өөрчлөх, өөрөөр турших зай үлдээгээрэй.","Өдөр тутмын амьдралыг хялбарчлах нэг жижиг дадал сонгоорой. Долоо хоногийн дараа үр дүнг нь эргэцүүлээрэй."],
-  5: ["Эрэлчин","Сониуч зан, эрх чөлөө, дасан зохицох чадвар нь эргэцүүлэх сэдэв юм. Шинэ туршлага танд юу утга учиртайг ойлгоход тусалж болно.","Өөрчлөлт урам өгдөг ч байнгын өөрчлөлт нь тууштай байхад хүндрэлтэй. Ямар тогтвортой зүйл эрх чөлөөг тань дэмждэгийг бодоорой.","Туршиж үзээгүй нэг зүйл хийж, сурсан зүйлээ бичээрэй. Үүний зэрэгцээ нэг тогтсон дадлаа хадгалаарай."],
-  6: ["Халамжлагч","Халамж, хариуцлага, харьяалагдах мэдрэмжийг бий болгох нь энэ тооны сэдэв юм. Өдөр тутмын амьдралд дулаан уур амьсгал бүрдүүлэхийг эрхэмлэж болно.","Бусдыг дэмжихийн тулд бүх хариуцлагыг үүрэх албагүй. Хил хязгаараа тогтоох нь халамжийг удаан хадгална.","Бусдад нэг тодорхой тус хүргээд, өөртөө зориулсан нэг халамжтай үйлдэл төлөвлөөрэй."],
-  7: ["Эргэцүүлэгч","Эргэцүүлэл, сониуч зан, учрыг нь ойлгох хүсэл нь энэ тооны сэдэв юм. Нам гүм цаг санаагаа цэгцэлж, гүн асуулт тавихад тусалж болно.","Эргэцүүлэл хэт их бодох эсвэл ганцаардах хэлбэрт шилжиж болно. Итгэдэг хүнтэй ярилцах нь өөр өнцөг өгнө.","Сонирхож буй нэг асуултаа сонгоорой. Судалж үзээд, олж мэдсэнээ итгэдэг хүнтэйгээ ярилцаарай."],
-  8: ["Зохион байгуулагч","Зорилго, манлайлал, нөөцөө ухаалгаар ашиглах нь эргэцүүлэх сэдэв юм. Бодит зорилгыг хэрэгжүүлэх нь танд сонирхолтой байж болно.","Амжилт бол утга учиртай амьдралын зөвхөн нэг хэсэг. Хангалттай гэдгийг хэрхэн тодорхойлдог, ямар харилцаанд цаг хэрэгтэйг бодоорой.","Нэг зорилго сонгоод түүнд хэрэгтэй цаг, дэмжлэг, чадварыг бичээрэй. Мөнгө, байр сууриас өөр амжилтын хэмжүүр нэмээрэй."],
-  9: ["Энэрэнгүй нэгэн","Энэрэл, өргөн өнцөг, хувь нэмэр оруулах нь энэ тооны сэдэв юм. Хүний амьдралыг өргөн хүрээнд харах сонирхолтой байж болно.","Бүх асуудлыг нэг дор шийдэх боломжгүй. Бодит үр дүн гаргаж чадах зүйлдээ анхаарч, дууссан үеэ тавьж явуулаарай.","Нийгэмдээ оруулж болох нэг жижиг хувь нэмэр сонгоорой. Дуусгах эсвэл орхиход бэлэн болсон зүйлээ эргэцүүлээрэй."],
-  11: ["Зөн мэдрэмжтэй нэгэн","Тоон зурхайд 11-ийг мэдрэмж, төсөөлөл, урам зоригтой холбодог мастер тоо гэж үздэг. Ажиглалтаа хэрэгтэй санаа болгох аргаа эргэцүүлээрэй.","Хүчтэй мэдрэмж нь нотолгоо биш. Зөн мэдрэмжээ бодит баримт, өдөр тутмын дадалтай тэнцвэржүүлээрэй.","Нэг мэдрэмжээ бичээд, ажигласан зүйл болон таамагласнаа ялгаарай. Дараагийн нэг бодит алхмыг сонгоорой."],
-  22: ["Алсын хараатай бүтээгч","Тоон зурхайд 22-ыг өргөн алсын хараа, бодит хөдөлмөрийг холбодог мастер тоо гэж үздэг. Том зорилгыг жижиг алхмуудад хувааж бодоорой.","Том зорилго хэт их дарамт үүсгэж болно. Ахиц удаан, тайван, хамтын байж болно.","Том санааныхаа эхний алхмыг энэ долоо хоногт хийж дуусгахаар хуваагаарай. Тус болох туршлагатай нэг хүнээ тодорхойлоорой."],
-  33: ["Энэрэнгүй чиглүүлэгч","Тоон зурхайд 33-ыг заах, нинжин сэтгэл, бусдад үйлчлэхтэй холбодог мастер тоо гэж үздэг. Туршлагаасаа юу хуваалцаж болохоо бодоорой.","Тустай байна гэдэг үргэлж бэлэн байна гэсэн үг биш. Даруу байдал, тодорхой хил хязгаар таны дэмжлэгийг үр өгөөжтэй болгоно.","Сурах хүсэлтэй хүнд нэг чадвар эсвэл сургамжаа хуваалцаарай. Түүний сонголт болон өөрийн амралтад зай үлдээгээрэй."],
-};
+const cap = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export function createReport(details: Details, year = new Date().getFullYear()): Report {
-  const digitSum = (value: string) => [...value.replace(/\D/g, "")].reduce((a, b) => a + Number(b), 0);
-  const lifePath = reduce(digitSum(details.birthday));
-  const birthNumber = reduce(Number(details.birthday.slice(8)));
-  const personalYear = reduce(digitSum(details.birthday.slice(5)) + digitSum(String(year)), false);
-  const life = meanings[lifePath], birth = meanings[birthNumber], cycle = meanings[personalYear];
-  return { ...details, year, lifePath, birthNumber, personalYear, archetype: life[0],
-    introduction: `${details.name}, таны төрсөн огнооноос гарсан тоонуудыг өөрийгөө эргэцүүлэх эхлэл болгон тайлбарлалаа. Танд нийцсэн санааг сонгон авч, өөрийн туршлагаар тунгаагаарай.`,
+function personPart(kicker: string, n: number): Part {
+  const t = numbers[n];
+  return {
+    kicker,
+    heading: `${pad(n)} ${t.title} · ${t.keywords}`,
+    lead: `Үндсэн сургаал: ${t.motto}`,
+    sections: t.sections.map((text, i) => ({ title: sectionTitles[i], text })),
+    note: `Эрхэм үг: ${t.saying}`,
+  };
+}
+
+export function createReport(details: ReportInput): Report {
+  const f = lifePath(details.fatherBirthday), c = lifePath(details.birthday);
+  const F = slots[f], C = slots[c], same = f === c;
+  const { code: pairCode, title: pairTitle, custom } = pairHeading(f, c);
+  const pairSubtitle = custom?.subtitle ?? "Эцгийн зам, таны зам — гэрэлт чанар ба санхүүгийн сүүдэр";
+  const quote = custom?.quote ?? "Эцгийн зам таны замтай уулзахад хишгийг хаах зүйл нь тоо биш, анзаараагүй алдаа байдаг.";
+  const light = same ? F.light : `${F.light}, ${C.light}`;
+  const advice = same ? F.advice : `${F.advice} ${C.advice}`;
+
+  const pair: Part = {
+    kicker: "III хэсэг · Хоёр тооны уулзвар",
+    heading: `${pairCode} ${pairTitle}`,
+    lead: `${pairSubtitle}. “${quote}”`,
     sections: [
-      { title: `Амьдралын зам ${lifePath} · ${life[0]}`, text: life[1] },
-      { title: "Өсөлт ба тэнцвэр", text: life[2] },
-      { title: "Харилцаанд эргэцүүлэх нь", text: `${life[2]} Ойр дотнын хүнтэйгээ ямар дэмжлэг хэрэгтэй байгаагаа ярилцаарай. Энэ нь хосын нийцлийн үнэлгээ биш.` },
-      { title: `Төрсөн өдрийн тоо ${birthNumber}`, text: `${birth[1]} ${birth[3]}` },
-      { title: `${year} оны хувийн тоо · ${personalYear}`, text: `Энэ жилийн эргэцүүлэх сэдэв: ${cycle[0].toLowerCase()}. ${cycle[3]} Энэ нь ирээдүйд болох үйл явдлын таамаглал биш.` },
-      { title: "Таны дараагийн жижиг алхам", text: life[3] },
+      { title: "Эцгийн мөр таны замд", text: `Эцгийн тооны бэлгэдэлд ${F.essence} гэсэн чанар тодорно. Эцгийн амьдралын жишигт «${F.standard}» гэсэн ойлголт ойр байж мэднэ. Харин таны тоонд ${C.essence} гэсэн ${same ? "ижил" : "өөр"} чиг тодорно. Эдгээр хоёр хүчний уулзварт эцгийн сайныг өвлөн, сул талыг нь давтахгүй байх сонголт гарч ирнэ.` },
+      { title: "Энэ холбооны гэрэлт тал", text: `Эцгийн дүрд тодрох ${F.strength} болон таны ${C.strength} хоёр зэрэгцэн орших үед ${light} гэсэн гэрэлт зам нээгдэнэ. Энэ холбооны хишиг нь нэгнийхээ дүрийг хуулбарлах бус, хоёр өөр ухааныг нэг дор хэрэглэхэд оршино.` },
+      { title: "Анзаарах ёстой нуугдмал алдаа", text: `Эцгийн «${F.standard}» гэсэн жин таны «${C.value}» гэсэн хүсэлтэй нийлэхэд мөнгөний шийдвэрт далд зөрчил үүснэ. ${cap(F.shadow)} хэмээх сүүдэр, ${C.challenge} гэсэн сорилт зэрэг хөдлөхөд алдагдлаа анзаарах мөч хойшилж мэднэ.` },
+      { title: "Эд баялгийн гурван зангилаа", items: [
+        { title: F.knotFather, text: `Эцгийн «${F.standard}» гэх хандлагыг өөрийн нөхцөлийг шалгалгүй дагавал ${C.challenge} эрсдэлтэй давхцаж мэднэ. Өнгөрсний зөв зам өнөөдөр заавал зөв биш.` },
+        { title: C.knotChild, text: `${cap(C.value)} чанар хэтрэхдээ ${C.riskTrait} сүүдэрт ойртдог. Эцгийн ${F.riskTrait} хандлага нэмэгдвэл алдаа бүрхэг болно.` },
+        { title: "ХОЁР ҮЕИЙН САНХҮҮГИЙН ЗАНГИЛАА", text: `${same ? `Хоёр талдаа ${F.dominant} давамгайлбал ${F.sameRisk}.` : `Эцгийн ${F.dominant}, таны ${C.dominant} нэг шийдвэрт мөргөлдвөл эцсийн үгийг хэн хэлэх нь бүрхэг болж, мөнгөний зөрчил далд хуримтлагдаж мэднэ.`} Ийм зөрчилд мөнгөний хэмжээ, хугацаа, хариуцагч тодорхой байх нь чухал.` },
+      ] },
+      { title: "Тэнцвэрийн түлхүүр", text: `Эцгийн ${F.strength} чанарыг хадгалж, өөрийн ${C.strength} талд зай гарга. ${advice} Энэ хоёрын тэнцвэр нь ${light} гэсэн сайн талд оршино. Хишгийг тогтоох арга нь сүртэй амлалт бус, хэмжээгээ мэдсэн шийдвэрт оршино.` },
+      { title: "Таны баримтлах гурван жаяг", items: [
+        { title: C.rule[0], text: C.rule[1] },
+        { title: F.inheritRule[0], text: F.inheritRule[1] },
+        { title: "ХОЁР ТАЛЫН ЖИНГ ТЭНЦҮҮЛ", text: "Хоёр талын сайн чанарыг нийцүүлэх нэг санхүүгийн шийдвэр сонго. Тэр шийдвэрт мөнгөний хэмжээ, эрсдэл, хугацаа, хариуцагчийг бичээд үйлд." },
+      ] },
+      { title: "Эцсийн тайлал", text: `Эцгийн «${F.standard}» гэх жишгийг таны «${C.essence}» гэх замд сохроор бүү хэрэглэ. ${custom ? `${custom.name} хэмээх энэ холбоо` : "Энэ холбоо"} таны давуу хоёр хүчийг ч, тэдний сүүдрийг ч харуулна. Эцгийн сайныг хүндэлж, өөрийн жинг хадгал. Эд баялгийг хамгаалах нь ганц удаагийн аз биш, өдөр тутмын үнэн тооцоо юм.` },
     ],
-    method: "Аргачлал: төрсөн огнооны бүх цифрийг нэмж, нэг оронтой болтол бууруулна. Амьдралын зам болон төрсөн өдрийн тоонд 11, 22, 33-ыг хадгална. Хувийн жилийн тоонд төрсөн сар, өдөр, тухайн жилийн цифрийг нэмж 1–9 болгон бууруулна. Нэрийг зөвхөн тайланг хувийн болгоход ашиглана. Тоон зурхай нь бэлгэдлийн эргэцүүлэл бөгөөд шинжлэх ухааны үнэлгээ биш.",
+  };
+
+  return {
+    father: { name: details.fatherName, birthday: details.fatherBirthday, number: f, title: numbers[f].title },
+    child: { name: details.name, birthday: details.birthday, number: c, title: numbers[c].title },
+    pairCode, pairTitle, pairSubtitle, quote,
+    parts: [personPart("I хэсэг · Эцгийн тоо", f), personPart("II хэсэг · Таны тоо", c), pair],
+    method: "Аргачлал: төрсөн огнооны бүх цифрийг нэмж, нэг оронтой (1–9) болтол бууруулна. Жишээ: 1995-06-13 → 1+9+9+5+0+6+1+3 = 34 → 3+4 = 7. Есөн тоо хүний зан төлөв, эд баялагт хандах хэв маяг, санхүүгийн эмзэг талыг бэлгэдэн өгүүлнэ. Энэхүү тайлал мөнгөний бодит үр дүнг урьдчилан тогтоохгүй.",
   };
 }

@@ -3,11 +3,12 @@ import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { orders, serviceTokens } from "@/db/schema";
 import { timingSafeEqual } from "node:crypto";
+import { isFullyPaid, type PaymentRow } from "@/lib/payment";
 
 export function setting(key: string) { return (env as Record<string, unknown>)[key] as string | undefined; }
 export function paymentReady() { return setting("PAYMENTS_ENABLED") === "true" && ["QPAY_CLIENT_ID", "QPAY_CLIENT_SECRET", "QPAY_INVOICE_CODE", "PUBLIC_ORIGIN"].every(key => !!setting(key)); }
 // Single fixed price for every report; not configurable at runtime.
-export const PRICE_MNT = 5000;
+export const PRICE_MNT = 10000;
 export function price() { return PRICE_MNT; }
 export function json(data: unknown, status = 200) { return Response.json(data, { status, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } }); }
 export async function hash(value: string) { return Buffer.from(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))).toString("hex"); }
@@ -58,4 +59,26 @@ export async function qpay<T>(path: string, payload: unknown): Promise<T> {
   if (!response.ok) throw new Error(`QPay returned ${response.status}`);
   return response.json() as Promise<T>;
 }
-export type Invoice = { invoice_id: string; qr_image: string; urls: { name: string; description: string; link: string; logo: string }[] };
+type Order = typeof orders.$inferSelect;
+// Asks QPay whether the order's invoice is fully paid and records it. Returns the paid order, or null if still unpaid.
+// Throws when QPay cannot be reached.
+export async function confirmPayment(order: Order): Promise<Order | null> {
+  if (order.status === "paid") return order;
+  if (!order.invoiceId) return null;
+  const result = await qpay<{ rows: PaymentRow[] }>("/v2/payment/check", { object_type: "INVOICE", object_id: order.invoiceId, offset: { page_number: 1, page_limit: 100 } });
+  if (!Array.isArray(result.rows) || !isFullyPaid(result.rows, order.amount)) return null;
+  const paidAt = Date.now();
+  await getDb().update(orders).set({ status: "paid", paidAt }).where(eq(orders.id, order.id));
+  return { ...order, status: "paid", paidAt };
+}
+// Status checks from the browser fall back to QPay when the callback has not arrived, at most once per order per 10 s per isolate.
+const lastCheck = new Map<string, number>();
+export async function confirmPaymentThrottled(order: Order): Promise<Order> {
+  if (order.status !== "pending" || !order.invoiceId || !paymentReady()) return order;
+  const now = Date.now();
+  if (now - (lastCheck.get(order.id) || 0) < 10000) return order;
+  lastCheck.set(order.id, now);
+  if (lastCheck.size > 1000) lastCheck.delete(lastCheck.keys().next().value!);
+  try { return await confirmPayment(order) || order; } catch { return order; }
+}
+export type Invoice ={ invoice_id: string; qr_image: string; urls: { name: string; description: string; link: string; logo: string }[] };

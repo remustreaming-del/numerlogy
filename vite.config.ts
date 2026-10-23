@@ -14,15 +14,28 @@ const { d1, r2 } = hostingConfig;
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
+// Own-account deploys set D1_DATABASE_ID (from `wrangler d1 create`); local dev keeps the placeholder.
+const databaseId = process.env.D1_DATABASE_ID || SITE_CREATOR_PLACEHOLDER_DATABASE_ID;
+
 const localBindingConfig = {
+  name: "toono",
   main: "./build/sites-worker.ts",
+  // Custom domains only for own-account deploys; the apex redirects to www in sites-worker.ts.
+  ...(process.env.D1_DATABASE_ID
+    ? {
+        routes: [
+          { pattern: "www.numpath.site", custom_domain: true },
+          { pattern: "numpath.site", custom_domain: true },
+        ],
+      }
+    : {}),
   compatibility_flags: ["nodejs_compat"],
   d1_databases: d1
     ? [
         {
           binding: d1,
-          database_name: "site-creator-d1",
-          database_id: SITE_CREATOR_PLACEHOLDER_DATABASE_ID,
+          database_name: process.env.D1_DATABASE_ID ? "toono-db" : "site-creator-d1",
+          database_id: databaseId,
         },
       ]
     : [],

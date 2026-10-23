@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { orders } from "@/db/schema";
-import { json, matches, paymentReady, qpay } from "@/lib/server";
-import { isFullyPaid, type PaymentRow } from "@/lib/payment";
+import { confirmPayment, json, matches, paymentReady } from "@/lib/server";
+import { deliverReport } from "@/lib/email";
 
 async function callback(req: Request, context: { params: Promise<{ id: string }> }) {
   if (!paymentReady()) return json({ error: "Payments disabled" }, 503);
@@ -14,13 +14,11 @@ async function callback(req: Request, context: { params: Promise<{ id: string }>
   if (!order || !await matches(key, order.callbackHash)) return json({ error: "Not found" }, 404);
   if (order.status === "paid") return json({ ok: true });
   if (!order.invoiceId) return json({ error: "Invoice not ready" }, 503);
-  try {
-    const result = await qpay<{ rows: PaymentRow[] }>("/v2/payment/check", { object_type: "INVOICE", object_id: order.invoiceId, offset: { page_number: 1, page_limit: 100 } });
-    if (Array.isArray(result.rows) && isFullyPaid(result.rows, order.amount)) {
-      await db.update(orders).set({ status: "paid", paidAt: Date.now() }).where(eq(orders.id, id));
-    }
-    return json({ ok: true });
-  } catch { return json({ error: "Payment verification unavailable. Please retry." }, 503); }
+  let paid: typeof order | null = null;
+  try { paid = await confirmPayment(order); } catch { return json({ error: "Payment verification unavailable. Please retry." }, 503); }
+  // Email failures are recorded on the order and retried from the status endpoint; QPay still gets ok.
+  if (paid) await deliverReport(paid);
+  return json({ ok: true });
 }
 export const GET = callback;
 export const POST = callback;

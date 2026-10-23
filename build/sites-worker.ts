@@ -4,6 +4,11 @@ import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 
 export default {
   fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+    const url = new URL(request.url);
+    if (url.hostname === "numpath.site") {
+      url.hostname = "www.numpath.site";
+      return Response.redirect(url.toString(), 301);
+    }
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and
     // the auxiliary service binding are absent from production builds.

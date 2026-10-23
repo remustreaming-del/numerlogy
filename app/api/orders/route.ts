@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     if (previous.invoiceJson) return json({ id, amount: previous.amount, ...JSON.parse(previous.invoiceJson) });
     return json({ error: "Захиалга боловсруулагдаж байна. Сэргээх кодоо хадгалаад түр хүлээнэ үү." }, 409);
   }
-  // Bound unpaid invoice creation; no visitor IPs or birth dates are sent to QPay.
+  // Bound unpaid invoice creation; no visitor IPs, emails, or birth dates are sent to QPay.
   const recent = await db.select({ id: orders.id }).from(orders).where(gt(orders.createdAt, Date.now() - 60000)).limit(20);
   if (recent.length >= 20) return json({ error: "Төлбөрийн хэсэг ачаалалтай байна. Нэг минутын дараа дахин оролдоно уу." }, 429);
   const callbackKey = crypto.randomUUID();
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   try {
     // Simple invoice without e-barimt: calculate_vat is off and no tax fields (tax_customer_code, district_code, lines) are sent.
     // sender_invoice_no must not contain special characters, so the order UUID is sent without hyphens.
-    const invoice = await qpay<Invoice>("/v2/invoice", { invoice_code: setting("QPAY_INVOICE_CODE"), sender_invoice_no: id.replace(/-/g, ""), invoice_receiver_code: "terminal", invoice_description: "Toono numerology report", amount, calculate_vat: false, callback_url: `${new URL(setting("PUBLIC_ORIGIN")!).origin}/api/qpay/callback/${id}?key=${callbackKey}` });
+    const invoice = await qpay<Invoice>("/v2/invoice", { invoice_code: setting("QPAY_INVOICE_CODE"), sender_invoice_no: id.replace(/-/g, ""), invoice_receiver_code: "terminal", invoice_description: "Toono Etsgiin kod report", amount, calculate_vat: false, callback_url: `${new URL(setting("PUBLIC_ORIGIN")!).origin}/api/qpay/callback/${id}?key=${callbackKey}` });
     if (!invoice.invoice_id || !invoice.qr_image) throw new Error("Incomplete invoice");
     const safeInvoice = { invoice_id: invoice.invoice_id, qr_image: invoice.qr_image, urls: invoice.urls || [] };
     await db.update(orders).set({ invoiceId: invoice.invoice_id, invoiceJson: JSON.stringify(safeInvoice), status: "pending" }).where(eq(orders.id, id));
