@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, GitBranch, Orbit } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Starfield } from "@/components/starfield";
 
@@ -14,8 +15,8 @@ const products = [
   },
   {
     href: "/natal",
-    eyebrow: "Төрсөн агшны тэнгэр",
-    title: "Натал зураг",
+    eyebrow: "Төрсөн өдрөө шалгах",
+    title: "Натал чарт",
     description: "Гараг, орд, гэрүүдийн бодит байрлалаар таны төрсөн агшны тэнгэрийн зургийг үнэ төлбөргүй гаргана.",
     price: "Зураг үнэгүй · Бүрэн тайлал ₮20,000",
     icon: Orbit,
@@ -43,5 +44,6 @@ export default function Home() {
       </section>
       <p className="privacy-line">Төрсөн мэдээлэл тань бүтээгдэхүүн сонгох үед гуравдагч тал руу илгээгдэхгүй.</p>
     </main>
+    <SiteFooter />
   </div>;
 }

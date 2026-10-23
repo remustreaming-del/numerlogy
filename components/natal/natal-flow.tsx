@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowLeft, ArrowRight, Download, LockKeyhole, ShieldCheck } from "lucide-react";
+import { BankLinks, type BankLink } from "@/components/bank-links";
 import { BirthDateFields } from "@/components/birth-date-fields";
+import { BirthTimeFields } from "@/components/birth-time-fields";
 import { ChartWheel } from "./chart-wheel";
 import { FreeSummary } from "./free-summary";
 import { EMPTY_PLACE, PlaceFields } from "./place-fields";
@@ -14,7 +16,7 @@ import type { NatalReading } from "@/lib/natal/reading-types";
 import { PAID_CONTENTS } from "@/lib/natal/free";
 import { downloadFile } from "@/lib/pdf";
 
-type Invoice = { id: string; amount: number; qr_image: string; urls: { name: string; description: string; link: string }[] };
+type Invoice = { id: string; amount: number; qr_image: string; urls: BankLink[] };
 type Saved = { id: string; token: string };
 type Config = { live: boolean; natalPrice: number };
 type OrderResponse = { status: string; amount: number; invoice: Invoice | null; report: NatalReading | null; email: string | null; emailEnabled: boolean };
@@ -37,7 +39,7 @@ function toInput(form: FormState): NatalInput {
 }
 
 export function NatalFlow() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", birthDate: "", birthTime: "12:00", cityId: "ulaanbaatar", unknownTime: false, place: EMPTY_PLACE });
+  const [form, setForm] = useState<FormState>({ name: "", email: "", birthDate: "", birthTime: "", cityId: "ulaanbaatar", unknownTime: false, place: EMPTY_PLACE });
   const [chart, setChart] = useState<NatalChart | null>(null);
   const [reading, setReading] = useState<NatalReading | null>(null);
   const [config, setConfig] = useState<Config | null>(null);
@@ -138,7 +140,7 @@ export function NatalFlow() {
       <input id="natal-name" name="name" autoComplete="given-name" required maxLength={80} value={form.name} onChange={(event) => change("name", event.target.value)} placeholder="Нэрээ оруулна уу…" />
       <BirthDateFields legend="Төрсөн огноо" value={form.birthDate} onChange={(value) => change("birthDate", value)} />
       <div className="time-row">
-        <label htmlFor="birth-time"><span>Төрсөн цаг (24 цагаар)</span><input id="birth-time" name="birthTime" type="time" step={60} value={form.birthTime} disabled={form.unknownTime} required={!form.unknownTime} onChange={(event) => change("birthTime", event.target.value)} /></label>
+        <BirthTimeFields legend="Төрсөн цаг (24 цагаар)" value={form.birthTime} disabled={form.unknownTime} onChange={(value) => change("birthTime", value)} />
         <label className="check-label"><input type="checkbox" checked={form.unknownTime} onChange={(event) => change("unknownTime", event.target.checked)} /><span>Төрсөн цагаа мэдэхгүй</span></label>
       </div>
       <p className="field-hint">Төрсний гэрчилгээн дээрх цагийг оруулбал хамгийн нарийн. Цаггүй бол Мандах орд, байшингууд гарахгүй, Сарны орд ойролцоо байна.</p>
@@ -184,7 +186,7 @@ export function NatalFlow() {
           ? <button className="button primary wide" disabled={busy || !config}>{busy ? "Бэлтгэж байна…" : config?.live ? "QPay-ээр төлөх" : "Туршилтын тайлал нээх"}</button>
           : <>
             <div className="qr-area"><img src={`data:image/png;base64,${invoice.qr_image}`} alt="QPay төлбөрийн QR код" width={232} height={232} /><p>Банкны апп-аар QR кодыг уншуулна уу.</p></div>
-            <div className="bank-links">{invoice.urls.filter((bank) => /^https?:\/\//i.test(bank.link)).map((bank) => <a key={bank.name} href={bank.link} rel="noreferrer">{bank.description || bank.name}</a>)}</div>
+            <BankLinks urls={invoice.urls} />
             <p className="message warning">Давхар бүү төлөөрэй: төлбөр баталгаажих хүртэл хэдэн секунд хүлээгээд «Төлбөр шалгах»-ыг дарна уу.</p>
             <p className="field-hint" role="status" aria-live="polite">Төлбөрийг 4 секунд тутам автоматаар шалгаж байна…</p>
             <button type="button" className="button primary wide" disabled={busy} onClick={() => check()}>{busy ? "Шалгаж байна…" : "Төлбөр шалгах"}</button>

@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
+import { BankLinks, type BankLink } from "@/components/bank-links";
 import { BirthDateFields } from "@/components/birth-date-fields";
 import { EtsgiinReportContent } from "./report-content";
 import type { Details, Report } from "@/lib/numerology";
 import { lifePath, numberTitles, pad, pairHeading } from "@/lib/codes";
 
-type Invoice = { id: string; amount: number; qr_image: string; urls: { name: string; description: string; link: string }[] };
+type Invoice = { id: string; amount: number; qr_image: string; urls: BankLink[] };
 type Saved = { id: string; token: string };
 type OrderResponse = { status: string; report: Report; invoice: Invoice; amount: number; email: string | null; emailEnabled: boolean };
 type Step = "dates" | "details" | "pay" | "report";
@@ -110,7 +111,7 @@ export function EtsgiinKodFlow() {
       <button className="button primary wide" disabled={busy || !config}>{busy ? "Бэлтгэж байна…" : "QPay-ээр төлөх"}<ArrowRight aria-hidden="true" /></button>
     </form>}
     {step === "pay" && <section className="flow-form"><button className="back-button" onClick={() => go("details")}><ArrowLeft aria-hidden="true" /> Буцах</button><p className="eyebrow">ТӨЛБӨР</p><h1>{price}</h1>
-      {!config?.live ? <div className="preview-box"><p>Туршилтын горим: төлбөр авахгүй, имэйл илгээхгүй.</p><button className="button primary wide" disabled={busy} onClick={preview}>{busy ? "Бэлтгэж байна…" : "Тайлалыг туршиж үзэх"}</button></div> : invoice && <><div className="qr-area"><img src={`data:image/png;base64,${invoice.qr_image}`} alt="QPay төлбөрийн QR код" width={232} height={232} /><p>Банкны апп-аар QR кодыг уншуулна уу.</p></div><div className="bank-links">{invoice.urls.filter((bank) => /^https?:\/\//i.test(bank.link)).map((bank) => <a key={bank.name} href={bank.link} rel="noreferrer">{bank.description || bank.name}</a>)}</div><button className="button primary wide" disabled={busy} onClick={() => saved && check(saved)}>{busy ? "Шалгаж байна…" : "Төлбөр шалгах"}</button></>}
+      {!config?.live ? <div className="preview-box"><p>Туршилтын горим: төлбөр авахгүй, имэйл илгээхгүй.</p><button className="button primary wide" disabled={busy} onClick={preview}>{busy ? "Бэлтгэж байна…" : "Тайлалыг туршиж үзэх"}</button></div> : invoice && <><div className="qr-area"><img src={`data:image/png;base64,${invoice.qr_image}`} alt="QPay төлбөрийн QR код" width={232} height={232} /><p>Банкны апп-аар QR кодыг уншуулна уу.</p></div><BankLinks urls={invoice.urls} /><button className="button primary wide" disabled={busy} onClick={() => saved && check(saved)}>{busy ? "Шалгаж байна…" : "Төлбөр шалгах"}</button></>}
     </section>}
     {step === "report" && report && <section className="report-view"><div className="report-title"><p className="eyebrow">ЭЦГИЙН КОД</p><h1>{report.pairCode} {report.pairTitle}</h1><p>{report.pairSubtitle}</p></div><EtsgiinReportContent report={report} /><button className="button primary" disabled={busy} onClick={() => download(report)}><Download aria-hidden="true" />{busy ? "Бэлтгэж байна…" : "PDF татах"}</button><button className="text-button" onClick={() => { setReport(null); setInvoice(null); go("dates"); }}>Шинэ тайлал</button></section>}
     {error && <p className="message error" role="alert" tabIndex={-1} ref={errorRef}>{error}</p>}{notice && <p className="message success" role="status">{notice}</p>}

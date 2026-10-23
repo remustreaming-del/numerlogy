@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   try {
     const invoice = await qpay<Invoice>("/v2/invoice", { invoice_code: setting("QPAY_INVOICE_CODE"), sender_invoice_no: id.replace(/-/g, ""), invoice_receiver_code: "terminal", invoice_description: "Toono natal chart full reading", amount, calculate_vat: false, callback_url: `${new URL(setting("PUBLIC_ORIGIN")!).origin}/api/qpay/callback/${id}?key=${callbackKey}` });
     if (!invoice.invoice_id || !invoice.qr_image) throw new Error("Incomplete invoice");
-    const safeInvoice = { invoice_id: invoice.invoice_id, qr_image: invoice.qr_image, urls: invoice.urls || [] };
+    const safeInvoice = { invoice_id: invoice.invoice_id, qr_image: invoice.qr_image, urls: (invoice.urls || []).map(({ name, description, link, logo }) => ({ name, description, link, logo })) };
     await db.update(orders).set({ invoiceId: invoice.invoice_id, invoiceJson: JSON.stringify(safeInvoice), status: "pending" }).where(eq(orders.id, id));
     return json({ id, amount, ...safeInvoice });
   } catch { return json({ error: "QPay төлбөрийн хүсэлт үүсгэж чадсангүй. Төлбөр аваагүй." }, 502); }
