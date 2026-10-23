@@ -1,14 +1,22 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, real } from "drizzle-orm/sqlite-core";
 
 export const orders = sqliteTable("orders", {
   id: text("id").primaryKey(),
   accessHash: text("access_hash").notNull(),
   callbackHash: text("callback_hash").notNull(),
+  product: text("product").notNull().default("etsgiin-kod"),
   // name/birthday are the customer's (child's); father fields and email are nullable for pre-existing orders.
   name: text("name").notNull(),
   birthday: text("birthday").notNull(),
   fatherName: text("father_name"),
   fatherBirthday: text("father_birthday"),
+  birthTime: text("birth_time"),
+  birthCity: text("birth_city"),
+  birthTimezone: text("birth_timezone"),
+  birthLatitude: real("birth_latitude"),
+  birthLongitude: real("birth_longitude"),
+  unknownTime: integer("unknown_time", { mode: "boolean" }),
+  chartJson: text("chart_json"),
   email: text("email"),
   emailStatus: text("email_status"),
   emailedAt: integer("emailed_at"),

@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Эцгийн код — Таны ЭЦГИЙН КОД юу вэ?",
-  description: "Аав болон таны төрсөн өдрөөс бүрдэх 81 бэлгэдлийн хослолын аль нь таны код болохыг мэдээрэй. Эд баялаг, зан төлөвийн бүрэн тайлал.",
+  title: "Toono · Тоо ба тэнгэрийн тайлал",
+  description: "Эцгийн код болон төрсөн агшны натал зургийг Монгол хэлээр тайлна.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
 };
+
+export const viewport: Viewport = { themeColor: "#080819", colorScheme: "dark" };
 
 export default function RootLayout({
   children,
@@ -17,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="mn">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased"><a className="skip-link" href="#main-content">Үндсэн хэсэг рүү алгасах</a>{children}</body>
     </html>
   );
 }

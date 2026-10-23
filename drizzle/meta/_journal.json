@@ -15,6 +15,13 @@
       "when": 1792247656381,
       "tag": "0001_father_child_email",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792748556979,
+      "tag": "0002_safe_blue_marvel",
+      "breakpoints": true
     }
   ]
 }

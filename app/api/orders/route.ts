@@ -22,8 +22,8 @@ export async function POST(req: Request) {
   const recent = await db.select({ id: orders.id }).from(orders).where(gt(orders.createdAt, Date.now() - 60000)).limit(20);
   if (recent.length >= 20) return json({ error: "Төлбөрийн хэсэг ачаалалтай байна. Нэг минутын дараа дахин оролдоно уу." }, 429);
   const callbackKey = crypto.randomUUID();
-  const amount = price();
-  const inserted = await db.insert(orders).values({ id, accessHash: await hash(accessToken), callbackHash: await hash(callbackKey), ...details, language: "mn", amount, year: new Date().getFullYear(), createdAt: Date.now() }).onConflictDoNothing().returning({ id: orders.id });
+  const amount = price("etsgiin-kod");
+  const inserted = await db.insert(orders).values({ id, accessHash: await hash(accessToken), callbackHash: await hash(callbackKey), product: "etsgiin-kod", ...details, language: "mn", amount, year: new Date().getFullYear(), createdAt: Date.now() }).onConflictDoNothing().returning({ id: orders.id });
   if (!inserted.length) return json({ error: "Төлбөрийн хүсэлт бэлтгэгдэж байна. Одоо байгаа захиалгаа шалгана уу." }, 409);
   try {
     // Simple invoice without e-barimt: calculate_vat is off and no tax fields (tax_customer_code, district_code, lines) are sent.

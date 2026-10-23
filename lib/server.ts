@@ -7,9 +7,10 @@ import { isFullyPaid, type PaymentRow } from "@/lib/payment";
 
 export function setting(key: string) { return (env as Record<string, unknown>)[key] as string | undefined; }
 export function paymentReady() { return setting("PAYMENTS_ENABLED") === "true" && ["QPAY_CLIENT_ID", "QPAY_CLIENT_SECRET", "QPAY_INVOICE_CODE", "PUBLIC_ORIGIN"].every(key => !!setting(key)); }
-// Single fixed price for every report; not configurable at runtime.
-export const PRICE_MNT = 10000;
-export function price() { return PRICE_MNT; }
+// Separate server-owned prices. Browser-supplied amounts are always ignored.
+export const ETSGIIN_PRICE_MNT = 20000;
+export const NATAL_PRICE_MNT = 20000;
+export function price(product: "etsgiin-kod" | "natal" = "etsgiin-kod") { return product === "natal" ? NATAL_PRICE_MNT : ETSGIIN_PRICE_MNT; }
 export function json(data: unknown, status = 200) { return Response.json(data, { status, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } }); }
 export async function hash(value: string) { return Buffer.from(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))).toString("hex"); }
 export async function matches(value: string, expected: string) { const actual = await hash(value); return timingSafeEqual(Buffer.from(actual), Buffer.from(expected)); }

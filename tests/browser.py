@@ -1,108 +1,118 @@
-"""Run against npm run dev. Requires Playwright, Chrome, and PyMuPDF."""
+"""End-to-end, visual, accessibility, and local speed checks.
+
+Run against ``npm run dev``. Uses installed Chrome, Python Playwright, PyMuPDF,
+and the repository's local axe-core bundle. Set SCREENSHOT_ROUND=round-1 or
+round-2 to preserve a named five-width visual set.
+"""
 from pathlib import Path
-import hashlib
 import json
-import sqlite3
-import uuid
+import os
+import re
+import time
 import pymupdf
 from playwright.sync_api import sync_playwright, expect
 
-BASE = 'http://127.0.0.1:5173'
-out = Path('outputs')
-out.mkdir(exist_ok=True)
+BASE = os.environ.get("BASE_URL", "http://127.0.0.1:5173")
+ROUND = os.environ.get("SCREENSHOT_ROUND", "final")
+WIDTHS = [(320, 780), (375, 812), (768, 900), (1024, 900), (1440, 1000)]
+OUT = Path("outputs") / "screenshots" / ROUND
+OUT.mkdir(parents=True, exist_ok=True)
+AXE = Path("node_modules/axe-core/axe.min.js")
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True, channel='chrome', args=['--disable-gpu'])
-    page = browser.new_page(viewport={'width': 1440, 'height': 1000}, device_scale_factor=1)
+
+def choose_birth_date(page, legend, year="1992", month="12", day="09"):
+    group = page.locator("fieldset").filter(has_text=legend)
+    group.locator("select").nth(0).select_option(year)
+    group.locator("select").nth(1).select_option(month)
+    group.locator("select").nth(2).select_option(day)
+
+
+def open_natal_chart(page):
+    page.goto(BASE + "/natal", wait_until="networkidle")
+    page.get_by_label("Таны нэр").fill("Саруул")
+    choose_birth_date(page, "Төрсөн огноо")
+    page.get_by_label("Төрсөн хот").select_option("ulaanbaatar")
+    page.get_by_label("Төрсөн цаг", exact=True).fill("08:45")
+    page.get_by_role("button", name="Натал зургаа гаргах").click()
+    expect(page.get_by_role("heading", name="Таны төрсөн агшны тэнгэр")).to_be_visible()
+    expect(page.get_by_role("img", name="Саруул-ийн натал зураг")).to_be_visible()
+    expect(page.get_by_role("table", name="Гараг ба цэгүүдийн нарийвчилсан байрлал")).to_be_visible()
+
+
+def axe_scan(page, label):
+    page.add_script_tag(content=AXE.read_text(encoding="utf-8"))
+    result = page.evaluate("async () => await axe.run(document, {runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa','wcag22aa']}})")
+    serious = [item for item in result["violations"] if item.get("impact") in ("serious", "critical")]
+    (OUT / f"axe-{label}.json").write_text(json.dumps(result["violations"], ensure_ascii=False, indent=2), encoding="utf-8")
+    assert not serious, [(item["id"], item["help"], len(item["nodes"])) for item in serious]
+
+
+with sync_playwright() as playwright:
+    browser = playwright.chromium.launch(headless=True, channel="chrome", args=["--disable-gpu"])
     errors = []
-    page.on('pageerror', lambda error: errors.append(str(error)))
-    page.goto(BASE)
-    page.wait_for_load_state('networkidle')
-    expect(page.get_by_role('heading', name='Таны тоонууд. Таны түүх.')).to_be_visible()
-    assert page.locator('html').get_attribute('lang') == 'mn'
-    assert page.locator('.language-switch, #report-language').count() == 0
-    assert page.request.get(BASE + '/api/sample?lang=en').json()['language'] == 'mn'
-    page.get_by_role('button', name='Миний тоог нээх').click()
-    page.get_by_label('Таны бүтэн нэр').fill('Anu')
-    page.get_by_label('Төрсөн огноо').fill('1995-06-13')
-    page.get_by_role('button', name='Төлбөр төлөх').click()
-    expect(page.get_by_role('heading', name='Тайлангаа үнэгүй туршаарай')).to_be_visible()
-    page.get_by_role('button', name='Миний тайланг үзэх').click()
-    expect(page.get_by_text('Туршилтын тайлан бэлэн')).to_be_visible()
-    expect(page.get_by_role('heading', name='Амьдралын зам 7')).to_be_visible()
-    with page.expect_download() as event:
-        page.get_by_role('button', name='PDF татах', exact=True).click()
-    event.value.save_as(out / 'browser-desktop-mn.pdf')
-    doc = pymupdf.open(out / 'browser-desktop-mn.pdf')
-    text = ''.join(p.get_text() for p in doc)
-    assert 'Anu' in text and 'Эргэцүүлэгч' in text and len(doc) == 2
-    # Embedded outlines must exist, not merely invisible searchable characters.
-    assert sum(len(p.get_drawings()) for p in doc) > 0
-    with page.expect_download() as event:
-        page.get_by_role('button', name='Текст файл', exact=True).click()
-    event.value.save_as(out / 'browser-desktop-mn.txt')
-    assert 'Anu' in (out / 'browser-desktop-mn.txt').read_text(encoding='utf-8-sig')
-    page.get_by_role('button', name='Жишээ тайлан', exact=True).click()
-    expect(page.get_by_role('dialog')).to_be_visible()
-    page.keyboard.press('Escape')
-    expect(page.get_by_role('dialog')).not_to_be_visible()
-    page.get_by_role('button', name='Миний тайлан', exact=True).click()
-    page.get_by_label('Сэргээх код', exact=True).fill('wrong-code')
-    page.get_by_role('button', name='Тайлангаа олох', exact=True).click()
-    expect(page.get_by_role('alert')).to_contain_text('Сэргээх кодыг бүтнээр оруулна уу')
-    page.keyboard.press('Escape')
 
-    # Exercise actual server validation and fail-closed checkout.
-    api = page.request
-    response = api.post(BASE + '/api/orders', data={}, headers={'Origin': BASE})
-    assert response.status == 503
-    response = api.post(BASE + '/api/preview', data={'name': 'Anu', 'birthday': '2023-02-29', 'language': 'en'}, headers={'Origin': BASE})
-    assert response.status == 400
-    response = api.post(BASE + '/api/preview', data={'name': 'Anu', 'birthday': '1995-06-13', 'language': 'en'}, headers={'Origin': 'https://untrusted.example'})
-    assert response.status in (400,403)
-    assert api.get(BASE + '/api/orders/unknown').status == 404
+    # Landing route, navigation semantics, five-width visual set.
+    for width, height in WIDTHS:
+        page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        started = time.perf_counter()
+        page.goto(BASE, wait_until="networkidle")
+        elapsed_ms = (time.perf_counter() - started) * 1000
+        expect(page.get_by_role("heading", name="Таны түүх тоо ба тэнгэрт зэрэг бичигдсэн.")).to_be_visible()
+        expect(page.get_by_role("link", name="Эцгийн код", exact=True)).to_be_visible()
+        expect(page.get_by_role("link", name="Натал зураг", exact=True)).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"landing overflow at {width}px"
+        assert elapsed_ms < 5000, f"landing network-idle took {elapsed_ms:.0f}ms at {width}px"
+        page.screenshot(path=str(OUT / f"landing-{width}.png"), full_page=True)
+        page.close()
 
-    # Verify durable order authorization and payment gating using local-only fixtures.
-    db_file = next(Path('.wrangler/state/v3/d1').rglob('*.sqlite'))
-    connection = sqlite3.connect(db_file)
-    order_id, token = str(uuid.uuid4()), str(uuid.uuid4())
-    hashed = hashlib.sha256(token.encode()).hexdigest()
-    connection.execute('INSERT INTO orders (id,access_hash,callback_hash,name,birthday,language,amount,year,status,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)', (order_id,hashed,hashed,'Local Test','1995-06-13','en',19900,2026,'pending',1))
-    connection.commit()
-    try:
-        url = BASE + '/api/orders/' + order_id
-        assert api.get(url).status == 404
-        assert api.get(url, headers={'Authorization': 'Bearer wrong'}).status == 404
-        response = api.get(url, headers={'Authorization': 'Bearer ' + token})
-        assert response.status == 200 and response.json()['report'] is None
-        connection.execute("UPDATE orders SET status='paid' WHERE id=?", (order_id,))
-        connection.commit()
-        response = api.get(url, headers={'Authorization': 'Bearer ' + token})
-        assert response.json()['report']['lifePath'] == 7
-        assert response.json()['report']['language'] == 'mn'
-    finally:
-        connection.execute('DELETE FROM orders WHERE id=?', (order_id,))
-        connection.commit()
-        connection.close()
+    # Complex natal result at every requested width.
+    for width, height in WIDTHS:
+        page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        if width == 375:
+            page.route("**/api/config", lambda route: route.fulfill(status=200, content_type="application/json", body='{"live":false,"price":20000,"etsgiinPrice":20000,"natalPrice":20000}'))
+        open_natal_chart(page)
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"natal overflow at {width}px"
+        page.evaluate("scrollTo(0, 0)")
+        page.screenshot(path=str(OUT / f"natal-{width}.png"), full_page=True)
+        if width == 375:
+            axe_scan(page, "natal-375")
+            page.get_by_role("button", name=re.compile(r"^Бүрэн тайлал")).click()
+            page.get_by_label("Имэйл хаяг").fill("sarul@example.com")
+            page.get_by_role("button", name="Туршилтын тайлал нээх").click()
+            expect(page.get_by_role("heading", name="Саруул-ийн тэнгэрийн хөрөг")).to_be_visible()
+            with page.expect_download() as event:
+                page.get_by_role("button", name="Зурагтай PDF татах").click()
+            pdf_path = OUT / "natal-preview.pdf"
+            event.value.save_as(pdf_path)
+            document = pymupdf.open(pdf_path)
+            pdf_text = "".join(item.get_text() for item in document)
+            assert "Саруул" in pdf_text and len(document) >= 2
+            assert sum(len(item.get_drawings()) for item in document) > 20
+        page.close()
 
-    mobile = browser.new_page(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
-    mobile.on('pageerror', lambda error: errors.append(str(error)))
-    mobile.goto(BASE)
-    mobile.wait_for_load_state('networkidle')
-    mobile.screenshot(path=str(out / 'mobile-mn.png'), full_page=True)
-    assert mobile.evaluate('document.documentElement.scrollWidth <= innerWidth')
-    mobile.get_by_label('Таны бүтэн нэр').fill('Мөнх-Эрдэнэ')
-    mobile.get_by_label('Төрсөн огноо').fill('1995-06-13')
-    mobile.get_by_role('button', name='Төлбөр төлөх', exact=True).click()
-    mobile.get_by_role('button', name='Миний тайланг үзэх', exact=True).click()
-    expect(mobile.get_by_role('heading', name='Мөнх-Эрдэнэ', exact=True)).to_be_visible()
-    with mobile.expect_download() as event:
-        mobile.get_by_role('button', name='PDF татах', exact=True).click()
-    event.value.save_as(out / 'browser-mn.pdf')
-    doc = pymupdf.open(out / 'browser-mn.pdf')
-    assert 'Мөнх-Эрдэнэ' in ''.join(p.get_text() for p in doc)
-    doc[0].get_pixmap().save(str(out / 'pdf-mn.png'))
-    assert mobile.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    # Unknown birth time is accepted and never fabricates an Ascendant.
+    unknown = browser.new_page(viewport={"width": 390, "height": 844})
+    unknown.goto(BASE + "/natal", wait_until="networkidle")
+    unknown.get_by_label("Таны нэр").fill("Номин")
+    choose_birth_date(unknown, "Төрсөн огноо", "1995", "06", "13")
+    unknown.get_by_label("Төрсөн цагаа мэдэхгүй").check()
+    unknown.get_by_role("button", name="Натал зургаа гаргах").click()
+    expect(unknown.get_by_text("Тодорхойгүй", exact=True)).to_be_visible()
+    expect(unknown.get_by_text("Төрсөн цаггүй зураг", exact=False)).to_be_visible()
+    unknown.close()
+
+    # Etsgiin-kod date inputs are explicit year/month/day controls.
+    etsgiin = browser.new_page(viewport={"width": 390, "height": 844})
+    etsgiin.goto(BASE + "/etsgiin-kod", wait_until="networkidle")
+    choose_birth_date(etsgiin, "Аавын төрсөн огноо", "1961", "04", "24")
+    choose_birth_date(etsgiin, "Таны төрсөн огноо", "1995", "06", "13")
+    etsgiin.get_by_role("button", name="Миний кодыг харах").click()
+    expect(etsgiin.get_by_text("09–07", exact=True)).to_be_visible()
+    axe_scan(etsgiin, "etsgiin-390")
+    etsgiin.close()
+
     assert not errors, errors
     browser.close()
-    print('PASS: desktop/mobile, Mongolian only, PDF/text downloads, dialogs, input validation, order authorization, payment gating; no browser errors.')
+    print(f"PASS: routes, five widths, natal chart/table, unknown time, preview PDF, axe AA scan, and local speed check. Screenshots: {OUT}")

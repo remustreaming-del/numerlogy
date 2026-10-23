@@ -55,5 +55,9 @@ next-env.d.ts
 /.sites-runtime/
 /.agents/
 /.codex/
-/outputs/
+/outputs/*
+!/outputs/design-audit.md
+!/outputs/final-report.md
+!/outputs/natal-texts-for-review.md
+!/outputs/screenshot-review.md
 /work/
