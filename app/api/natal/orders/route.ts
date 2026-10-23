@@ -1,7 +1,8 @@
 import { getDb } from "@/db";
 import { orders } from "@/db/schema";
 import { eq, gt } from "drizzle-orm";
-import { createNatalReading, validateNatalInput } from "@/lib/astrology";
+import { validateNatalInput } from "@/lib/astrology";
+import { createNatalReading } from "@/lib/natal/reading";
 import { body, hash, json, paymentReady, price, qpay, setting, type Invoice } from "@/lib/server";
 
 export async function POST(req: Request) {

@@ -18,3 +18,61 @@ button,input,select,textarea{font:inherit}button,a,input,select,textarea{-webkit
 @media(max-width:700px){.site-header{width:calc(100% - 32px);height:72px}.site-header nav{gap:14px}.site-header nav a{font-size:11px}.brand{font-size:29px}.landing-main,.product-page,.natal-page{width:calc(100% - 32px)}.landing-main{padding-top:64px}.landing-hero{margin-bottom:42px}.landing-hero h1{font-size:clamp(46px,14vw,68px)}.product-grid{grid-template-columns:1fr}.product-card{min-height:330px;padding:24px}.product-page,.natal-page{padding-top:42px}.flow-card,.natal-form,.chart-result{padding:22px}.stepper li span{display:none}.chart-layout{grid-template-columns:1fr}.positions-wrap{max-height:none}.chart-heading{display:block}.system-badge{display:inline-block;margin-top:14px}.unlock-panel{align-items:stretch;flex-direction:column}.unlock-panel .button{width:100%}}
 @media(max-width:480px){body{font-size:15px}.site-header nav{gap:9px}.site-header nav a{font-size:10px}.landing-main,.product-page,.natal-page{width:calc(100% - 24px)}.site-header{width:calc(100% - 24px)}.landing-main{padding-top:48px}.landing-hero h1{font-size:44px}.product-card h2{font-size:44px}.product-card-action{align-items:start;flex-direction:column}.product-intro h2,.natal-intro h2{font-size:44px}.product-intro dl{grid-template-columns:1fr}.flow-card,.natal-form,.chart-result{padding:18px;border-radius:18px}.date-fields{grid-template-columns:1.35fr 1fr 1fr;gap:6px}.date-fields select{padding:10px 8px}.time-row{grid-template-columns:1fr}.number-summary{grid-template-columns:1fr}.number-summary>div+div{border-left:0;border-top:1px solid var(--line)}.trinity-grid{grid-template-columns:1fr 1fr}.trinity-grid article:last-child{grid-column:1/-1}.report-view>.text-button{display:block;margin-left:0}.long-reading blockquote{padding-inline:0}.chart-wheel{min-width:0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.product-card,.button{transition:none}.product-card:hover,.button:hover:not(:disabled){transform:none}}
+
+/* ---------------------------------------------------------------- natal v2 */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.degree-tick{stroke:#3b3752;stroke-width:.5}
+.zodiac-glyph.element-0{fill:#e39a6f}.zodiac-glyph.element-1{fill:#c9b37a}.zodiac-glyph.element-2{fill:#9fb7e0}.zodiac-glyph.element-3{fill:#7fc4c0}
+.axis-line{stroke:var(--gold);stroke-width:1.2}
+.angle-label{font:600 8px var(--sans);letter-spacing:.08em}
+.aspect-line{stroke-width:.9;fill:none}.aspect-line.harmonious{stroke:#7fa6e6}.aspect-line.challenging{stroke:#e07c7c}
+.planet-tick{stroke:#f2eddf;stroke-width:.9}
+.planet-disc.node{stroke:#9b95b8}
+.retro-mark{fill:#e07c7c;font:700 6px var(--sans)}
+.planet-mark{cursor:default}
+.chart-figure figcaption .legend{display:inline-flex;align-items:center;gap:4px}
+.chart-figure figcaption .legend:before{content:"";width:14px;height:2px;border-radius:1px;background:currentColor}
+.legend.harmonious{color:#9dbcf0}.legend.challenging{color:#ee9a9a}
+.positions-stack{display:grid;gap:12px;min-width:0}
+.aspect-list{border:1px solid var(--line);border-radius:var(--radius-md);padding:0 14px}
+.aspect-list summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--text-soft)}
+.aspect-list ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px;font-size:11px;color:var(--text-soft);font-variant-numeric:tabular-nums}
+.aspect-list li span{display:inline-block;width:16px;color:var(--gold)}
+.chart-note{margin-top:12px}
+.chart-note+.chart-note{border-top:0;padding-top:0}
+.custom-place{border:1px solid var(--line);border-radius:var(--radius-md);margin:14px 0 0;padding:14px 16px 16px;display:grid;gap:12px}
+.custom-place legend{font-size:12px;font-weight:600;padding:0 6px}
+.custom-place label>span{display:block;font-size:11px;font-weight:600;margin-bottom:6px;color:var(--text-soft)}
+.coordinate-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trinity-grid article{display:flex;flex-direction:column;align-items:center}
+.trinity-text{margin-top:12px!important;font-size:12px!important;line-height:1.6;color:var(--text-soft)!important;text-transform:none!important;letter-spacing:0!important;text-align:left}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.balance-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 18px;background:rgba(24,22,49,.6)}
+.balance-card h3{font:500 19px var(--serif);margin:0 0 12px}
+.balance-card ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.balance-card li{display:grid;grid-template-columns:minmax(0,1fr) 90px 36px;gap:10px;align-items:center;font-size:12px}
+.bar-label{display:flex;flex-direction:column;min-width:0}.bar-label small{color:var(--muted);font-size:10px}
+.bar-track{height:6px;border-radius:3px;background:#1e1c38;overflow:hidden}.bar-track span{display:block;height:100%;border-radius:3px;background:var(--gold)}
+.bar-fire .bar-track span{background:#e39a6f}.bar-earth .bar-track span{background:#c9b37a}.bar-air .bar-track span{background:#9fb7e0}.bar-water .bar-track span{background:#7fc4c0}
+.bar-value{text-align:right;font-variant-numeric:tabular-nums;color:var(--text-soft)}
+.paid-contents{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:12px;color:var(--text-soft)}
+.paid-contents li{position:relative;padding-left:16px}.paid-contents li:before{content:"✦";position:absolute;left:0;top:1px;font-size:9px;color:var(--gold)}
+.message.warning{color:#f1d39a;background:rgba(213,182,107,.1);border:1px solid #5b4e43}
+.reading-name{font:500 22px var(--serif);color:var(--text-soft);margin:4px 0 8px}
+.reading-toc{border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 20px;margin:8px 0 12px;background:rgba(24,22,49,.6)}
+.reading-toc ol{margin:0;padding-left:20px;columns:2;column-gap:28px;font-size:12px}
+.reading-toc li{padding:4px 0;break-inside:avoid}.reading-toc a{color:var(--text-soft);text-underline-offset:4px}.reading-toc a:hover{color:var(--gold-bright)}
+.reading-group{scroll-margin-top:24px}
+.group-title{font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line-strong)}
+.full-reading article{max-width:70ch}
+.full-reading article h4{font:500 24px var(--serif);color:var(--gold-bright);margin:0 0 4px}
+.full-reading article p{color:var(--text-soft);font-size:14px;line-height:1.75;margin:0 0 10px}
+.full-reading article .section-meta{font-size:11px;color:var(--gold);letter-spacing:.02em;margin-bottom:10px}
+@media(max-width:700px){.balance-grid{grid-template-columns:1fr}.reading-toc ol{columns:1}}
+@media(max-width:560px){.trinity-grid{grid-template-columns:1fr}.trinity-grid article:last-child{grid-column:auto}.coordinate-row{grid-template-columns:1fr}}
+@media print{.site-header,.natal-intro,.back-button,.unlock-panel,.checkout-panel,.download-row,.reading-toc,canvas{display:none!important}.chart-result{box-shadow:none;border:0}}
+
+.zodiac-glyph,.planet-glyph,.table-glyph{font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",var(--sans);font-variant-emoji:text}
+.table-glyph{width:auto;min-width:22px;margin-right:6px;font-size:13px;text-align:center}
+.positions-table td{white-space:nowrap}
+.aspect-glyph{font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Apple Symbols",var(--sans);font-size:.8em;margin:0 .35em;color:var(--gold);vertical-align:.08em}

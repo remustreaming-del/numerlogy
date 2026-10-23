@@ -1,0 +1,617 @@
+[
+  {
+    "term_id": "natal_chart",
+    "english": "Natal chart",
+    "mongolian": "натал зураг",
+    "aliases": [
+      "төрсөн агшны тэнгэрийн зураг"
+    ],
+    "definition_mn": "Төрсөн агшны Нар, Сар, гарагуудын байрлалын зураг.",
+    "usage_notes": "Анх гарахдаа «төрсөн агшны тэнгэрийн зураг» гэж тайлбарлана. «Чарт», «хороскоп» хэрэглэхгүй.",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet",
+    "english": "Planet",
+    "mongolian": "гараг",
+    "aliases": [],
+    "definition_mn": "Сэтгэлийн тодорхой үйл ажиллагааг бэлгэддэг тэнгэрийн бие.",
+    "usage_notes": "«Гариг» биш «гараг».",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign",
+    "english": "Sign",
+    "mongolian": "орд",
+    "aliases": [
+      "зодиакийн орд"
+    ],
+    "definition_mn": "Зодиакийн 30 хэмийн 12 хэсгийн нэг; гарагийн илрэх хэв маяг.",
+    "usage_notes": "Харьяалахын тийн ялгалтай: «Хонины ордод».",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "house",
+    "english": "House",
+    "mongolian": "байшин",
+    "aliases": [],
+    "definition_mn": "Амьдралын тодорхой хүрээг илэрхийлэх зургийн 12 хэсгийн нэг.",
+    "usage_notes": "Бичвэрт «нэгдүгээр байшинд», хүснэгтэд «1-р байшин». «Гэр» хэрэглэхгүй.",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "ascendant",
+    "english": "Ascendant",
+    "mongolian": "Мандах орд",
+    "aliases": [
+      "ASC",
+      "Асцендент"
+    ],
+    "definition_mn": "Төрөх агшинд зүүн хаяанаас мандаж байсан зодиакийн хэм.",
+    "usage_notes": "Анх: «Мандах орд буюу Асцендент». Дараа нь зөвхөн «Мандах орд».",
+    "category": "angle",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "descendant",
+    "english": "Descendant",
+    "mongolian": "Шингэх цэг",
+    "aliases": [
+      "DSC"
+    ],
+    "definition_mn": "Мандах ордын эсрэг цэг.",
+    "usage_notes": "",
+    "category": "angle",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "midheaven",
+    "english": "Midheaven",
+    "mongolian": "Тэнгэрийн оргил",
+    "aliases": [
+      "MC"
+    ],
+    "definition_mn": "Тэнгэрийн хамгийн өндөр цэгт байсан зодиакийн хэм.",
+    "usage_notes": "",
+    "category": "angle",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "imum_coeli",
+    "english": "Imum Coeli",
+    "mongolian": "Тэнгэрийн ёроол",
+    "aliases": [
+      "IC"
+    ],
+    "definition_mn": "Тэнгэрийн оргилын эсрэг цэг.",
+    "usage_notes": "",
+    "category": "angle",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect",
+    "english": "Aspect",
+    "mongolian": "аспект",
+    "aliases": [],
+    "definition_mn": "Гарагуудын хоорондох өнцгийн харилцаа.",
+    "usage_notes": "",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect.conjunction",
+    "english": "Conjunction",
+    "mongolian": "Нэгдэл",
+    "aliases": [],
+    "definition_mn": "Ойролцоогоор 0° өнцөг.",
+    "usage_notes": "",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect.sextile",
+    "english": "Sextile",
+    "mongolian": "Секстиль",
+    "aliases": [],
+    "definition_mn": "Ойролцоогоор 60° өнцөг.",
+    "usage_notes": "Боломжийг идэвхтэй ашиглах шаардлагатай гэж тайлбарлана.",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect.square",
+    "english": "Square",
+    "mongolian": "Квадрат",
+    "aliases": [],
+    "definition_mn": "Ойролцоогоор 90° өнцөг.",
+    "usage_notes": "Хурцадмал боловч хөдөлгөгч; айлгах үг хэрэглэхгүй.",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect.trine",
+    "english": "Trine",
+    "mongolian": "Трин",
+    "aliases": [
+      "Трин аспект"
+    ],
+    "definition_mn": "Ойролцоогоор 120° өнцөг.",
+    "usage_notes": "Эерэг боломж боловч үр дүнг баталгаатай гэж хэлэхгүй.",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "aspect.opposition",
+    "english": "Opposition",
+    "mongolian": "Эсрэгцэл",
+    "aliases": [],
+    "definition_mn": "Ойролцоогоор 180° өнцөг.",
+    "usage_notes": "«Оппозиц» хэрэглэхгүй.",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "orb",
+    "english": "Orb",
+    "mongolian": "орб",
+    "aliases": [],
+    "definition_mn": "Яг тохирох аспектын өнцгөөс зөрөх хэмжээ, хэмээр.",
+    "usage_notes": "«Орб 1.4°».",
+    "category": "aspect",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "retrograde",
+    "english": "Retrograde",
+    "mongolian": "ретроград",
+    "aliases": [],
+    "definition_mn": "Дэлхийгээс харахад гараг ухарч буй мэт харагдах хөдөлгөөн.",
+    "usage_notes": "",
+    "category": "motion",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "north_node",
+    "english": "North Node",
+    "mongolian": "Сарны хойд зангилаа",
+    "aliases": [
+      "Раху"
+    ],
+    "definition_mn": "Сарны тойрог зам нарны замыг огтлох цэг (жинхэнэ зангилаа).",
+    "usage_notes": "",
+    "category": "point",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "chart_ruler",
+    "english": "Chart ruler",
+    "mongolian": "зургийн эзэн гараг",
+    "aliases": [],
+    "definition_mn": "Мандах ордын уламжлалт эзэн гараг.",
+    "usage_notes": "",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign_ruler",
+    "english": "Sign ruler",
+    "mongolian": "ордын эзэн гараг",
+    "aliases": [],
+    "definition_mn": "Ордыг захирдаг гараг.",
+    "usage_notes": "",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "element",
+    "english": "Element",
+    "mongolian": "махбод",
+    "aliases": [],
+    "definition_mn": "Гал, Шороо, Агаар, Ус.",
+    "usage_notes": "",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "modality",
+    "english": "Modality",
+    "mongolian": "хэв шинж",
+    "aliases": [],
+    "definition_mn": "Эхлүүлэгч, Тогтвортой, Уян хатан.",
+    "usage_notes": "",
+    "category": "concept",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "stellium",
+    "english": "Stellium",
+    "mongolian": "стеллиум",
+    "aliases": [
+      "гарагийн бөөгнөрөл"
+    ],
+    "definition_mn": "Нэг орд эсвэл байшинд 3 ба түүнээс дээш гараг.",
+    "usage_notes": "",
+    "category": "pattern",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "dignity.domicile",
+    "english": "Domicile",
+    "mongolian": "өөрийн орд",
+    "aliases": [],
+    "definition_mn": "Гараг өөрийн захирдаг ордод байх.",
+    "usage_notes": "",
+    "category": "dignity",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "dignity.exaltation",
+    "english": "Exaltation",
+    "mongolian": "өргөмжлөгдсөн орд",
+    "aliases": [],
+    "definition_mn": "Гарагийн хамгийн тод илэрдэг орд.",
+    "usage_notes": "",
+    "category": "dignity",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "dignity.detriment",
+    "english": "Detriment",
+    "mongolian": "эсрэг орд",
+    "aliases": [],
+    "definition_mn": "Гарагийн өөрийн ордын эсрэг орд.",
+    "usage_notes": "Сөрөг үнэлгээгүй тайлбарлана.",
+    "category": "dignity",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "dignity.fall",
+    "english": "Fall",
+    "mongolian": "уналтын орд",
+    "aliases": [],
+    "definition_mn": "Өргөмжлөлийн эсрэг орд.",
+    "usage_notes": "Сөрөг үнэлгээгүй тайлбарлана.",
+    "category": "dignity",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "tropical_zodiac",
+    "english": "Tropical zodiac",
+    "mongolian": "тропик зодиак",
+    "aliases": [],
+    "definition_mn": "Хаврын тэгшитгэлийн цэгээс эхэлдэг зодиак.",
+    "usage_notes": "",
+    "category": "method",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "placidus",
+    "english": "Placidus",
+    "mongolian": "Плацидус",
+    "aliases": [],
+    "definition_mn": "Хагас нумын байшингийн систем.",
+    "usage_notes": "",
+    "category": "method",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "whole_sign",
+    "english": "Whole Sign",
+    "mongolian": "Бүхэл ордын систем",
+    "aliases": [],
+    "definition_mn": "Орд бүрийг нэг байшин гэж үзэх систем.",
+    "usage_notes": "",
+    "category": "method",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "synastry",
+    "english": "Synastry",
+    "mongolian": "хоёр зургийн харьцуулалт",
+    "aliases": [],
+    "definition_mn": "Хоёр хүний натал зургийг харьцуулах арга.",
+    "usage_notes": "Ирээдүйн бүтээгдэхүүн.",
+    "category": "method",
+    "status": "reviewed",
+    "version": 1
+  },
+  {
+    "term_id": "planet.sun",
+    "english": "Sun",
+    "mongolian": "Нар",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.moon",
+    "english": "Moon",
+    "mongolian": "Сар",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.mercury",
+    "english": "Mercury",
+    "mongolian": "Буд",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.venus",
+    "english": "Venus",
+    "mongolian": "Сугар",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.mars",
+    "english": "Mars",
+    "mongolian": "Ангараг",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.jupiter",
+    "english": "Jupiter",
+    "mongolian": "Бархасбадь",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.saturn",
+    "english": "Saturn",
+    "mongolian": "Санчир",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.uranus",
+    "english": "Uranus",
+    "mongolian": "Тэнгэрийн ван",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.neptune",
+    "english": "Neptune",
+    "mongolian": "Далайн ван",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "planet.pluto",
+    "english": "Pluto",
+    "mongolian": "Плутон",
+    "aliases": [],
+    "definition_mn": "",
+    "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
+    "category": "planet",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.aries",
+    "english": "Aries",
+    "mongolian": "Хонь",
+    "aliases": [
+      "Хонины орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Хонины ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.taurus",
+    "english": "Taurus",
+    "mongolian": "Үхэр",
+    "aliases": [
+      "Үхрийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Үхрийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.gemini",
+    "english": "Gemini",
+    "mongolian": "Ихэр",
+    "aliases": [
+      "Ихрийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Ихрийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.cancer",
+    "english": "Cancer",
+    "mongolian": "Мэлхий",
+    "aliases": [
+      "Мэлхийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Мэлхийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.leo",
+    "english": "Leo",
+    "mongolian": "Арслан",
+    "aliases": [
+      "Арслангийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Арслангийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.virgo",
+    "english": "Virgo",
+    "mongolian": "Охин",
+    "aliases": [
+      "Охины орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Охины ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.libra",
+    "english": "Libra",
+    "mongolian": "Жинлүүр",
+    "aliases": [
+      "Жинлүүрийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Жинлүүрийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.scorpio",
+    "english": "Scorpio",
+    "mongolian": "Хилэнц",
+    "aliases": [
+      "Хилэнцийн орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Хилэнцийн ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.sagittarius",
+    "english": "Sagittarius",
+    "mongolian": "Нум",
+    "aliases": [
+      "Нумын орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Нумын ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.capricorn",
+    "english": "Capricorn",
+    "mongolian": "Матар",
+    "aliases": [
+      "Матарын орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Матарын ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.aquarius",
+    "english": "Aquarius",
+    "mongolian": "Хумх",
+    "aliases": [
+      "Хумхын орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Хумхын ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  },
+  {
+    "term_id": "sign.pisces",
+    "english": "Pisces",
+    "mongolian": "Загас",
+    "aliases": [
+      "Загасны орд"
+    ],
+    "definition_mn": "",
+    "usage_notes": "Бичвэрт «Загасны ордод».",
+    "category": "sign",
+    "status": "approved",
+    "version": 1
+  }
+]

@@ -2,8 +2,8 @@ import { and, eq, inArray, isNull, lt, or } from "drizzle-orm";
 import { getDb } from "@/db";
 import { orders } from "@/db/schema";
 import { createReport, type Report } from "@/lib/numerology";
-import type { NatalReading } from "@/lib/astrology";
-import { createNatalReading } from "@/lib/astrology";
+import { createNatalReading, type NatalReading } from "@/lib/natal/reading";
+import { CUSTOM_PLACE_ID } from "@/lib/cities";
 import { setting } from "@/lib/server";
 import { message } from "@/lib/email-template";
 import { natalMessage } from "@/lib/natal-email-template";
@@ -17,7 +17,9 @@ export function orderReport(order: Order): Report | NatalReading | null {
   if (order.product === "natal") {
     if (order.chartJson) return JSON.parse(order.chartJson) as NatalReading;
     if (!order.birthTime || !order.birthCity) return null;
-    return createNatalReading({ name: order.name, email: order.email ?? "", birthDate: order.birthday, birthTime: order.birthTime, cityId: order.birthCity, unknownTime: order.unknownTime ?? false });
+    const place = order.birthCity === CUSTOM_PLACE_ID && order.birthLatitude != null && order.birthLongitude != null && order.birthTimezone
+      ? { label: "Өөр газар", latitude: order.birthLatitude, longitude: order.birthLongitude, timezone: order.birthTimezone } : undefined;
+    return createNatalReading({ name: order.name, email: order.email ?? "", birthDate: order.birthday, birthTime: order.birthTime, cityId: order.birthCity, unknownTime: order.unknownTime ?? false, place });
   }
   if (order.fatherName == null || !order.fatherBirthday) return null;
   return createReport({ fatherName: order.fatherName, fatherBirthday: order.fatherBirthday, name: order.name, birthday: order.birthday });

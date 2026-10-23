@@ -9,13 +9,23 @@ The landing route `/` presents both products. Prices are independent server cons
 
 ## Natal calculation
 
-- Sun, Moon, and planet positions use the MIT-licensed `astronomy-engine` package. Calculations are local/in-process and require no ephemeris API.
-- Five committed charts compare all 10 planetary longitudes against NASA/JPL Horizons DE441 to within 0.1°.
-- Houses use iterative Placidus semi-arcs. At |latitude| ≥ 66.5°, where Placidus is undefined, the engine labels and uses Whole Sign.
-- Local birth times resolve with Luxon against the runtime's IANA/ICU history. Tests cover Mongolia's 1983–1998 and 2015–2016 daylight-saving periods and the western `Asia/Hovd` zone.
-- Birthplaces come from `lib/cities.ts`. No geocoding request is made and free-chart birth data stays in the browser.
-- Unknown times use local noon for approximate planetary positions and intentionally omit the Ascendant and houses.
-- The SVG wheel is paired with a visible semantic table. Paid PDFs draw the wheel as vector geometry.
+- Planets use the MIT-licensed `astronomy-engine` (apparent, light-time and aberration corrected, ecliptic of date). Angles use apparent sidereal time with the **true** obliquity; the lunar node is the **true** (osculating) node.
+- Accuracy gates in `tests/natal.test.mjs`: 5 charts vs NASA/JPL Horizons DE441 (planets ≤ 0.1°), 6 charts vs Swiss Ephemeris 2.10 (ASC, MC, all 12 Placidus cusps ≤ 0.03°, true node ≤ 0.05°). An offline 400-chart sweep against Swiss Ephemeris (1920–2030, latitudes −60…65°) gave max errors of 0.005° (planets), 0.004° (ASC/cusps), 0.01° (node). Swiss Ephemeris is **not** a dependency (AGPL); only the reference numbers are embedded.
+- Houses: iterative Placidus semi-arcs; Whole Sign at |latitude| ≥ 66.5° or wherever a semi-arc is undefined, and the reading says so.
+- Time: Luxon + IANA history. Covers Mongolia's DST years (1983–1998, 2001–2006, 2015–2016), `Asia/Hovd` for the western aimags, a skipped spring-forward time (moved forward and flagged) and a repeated fall-back time (summer-time occurrence used and flagged).
+- Degrees are truncated, never rounded (29°59.9′ stays in its sign).
+- Places: `lib/cities.ts` has all 21 aimag centres plus diaspora cities. «Өөр газар» accepts latitude, longitude and an IANA zone for soums and unlisted places. No geocoding request is ever made.
+- Unknown time: noon positions, no ASC/MC/houses, and the reading reports when the Moon changes sign that day (with both texts).
+- When a shift of ≤ 15 minutes in birth time would change the Ascendant sign, the chart and reading warn the customer.
+
+## Natal reading (paid)
+
+- Free (client): wheel, positions table, aspect list, Big Three short texts and element/modality balance — `lib/natal/free.ts`.
+- Paid (server only): `lib/natal/reading.ts` assembles ~45–50 sections from `lib/natal/content/*` — overview (elements, modality, Moon phase, chart ruler, stelliums, hemispheres), Sun/Moon/ASC, every planet by sign + house + dignity + retrograde + angularity, MC and 10th ruler, true node, the 12 most relevant aspects, all 12 houses, strengths, challenges, synthesis and method. The browser never imports it; the free preview uses `POST /api/natal/preview` (only while payments are off). `npm run build` then `grep` of `dist/client` for a paid sentence must return nothing.
+- Mongolian language rules, glossary, style guide and checklist: `.claude/skills/mongolian-natal-translation/`. Machine-readable glossary and licence registry: `knowledge/`.
+- Names and signs are never declined at runtime by gluing suffixes; every substituted noun has hand-written case forms in `lib/natal/terms.ts`.
+- `tests/natal-content.test.mjs` enforces coverage, approved terms, banned fatalistic/medical wording, Latin leakage, sentence counts, no reused sentences, and 300 generated readings that must match the chart data exactly and never repeat a long sentence more than twice.
+- Proofreading: `node --experimental-strip-types scripts/export-natal-texts.mjs > outputs/natal-texts-for-review.md`; a full sample reading: `node --experimental-strip-types scripts/sample-natal-reading.mjs 1990-07-01 08:30 ulaanbaatar`.
 
 ## Payments and email
 
@@ -56,7 +66,7 @@ node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1
 ```powershell
 npx tsc --noEmit
 npm run lint
-node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs
+node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs
 npm run build
 $env:SCREENSHOT_ROUND='final'; python tests/browser.py
 ```
