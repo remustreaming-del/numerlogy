@@ -2,7 +2,7 @@
 
 A Mongolian-first, dark celestial site with two products:
 
-- `/etsgiin-kod` — father/child numerology report, **₮20,000**.
+- `/etsgiin-kod` — father/child numerology report, **₮10,000**.
 - `/natal` — free natal wheel plus Sun, Moon, and Ascendant; full reading and PDF, **₮20,000**.
 
 The landing route `/` presents both products. Prices are independent server constants in `lib/server.ts`.

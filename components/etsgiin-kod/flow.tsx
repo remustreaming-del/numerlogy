@@ -90,7 +90,7 @@ export function EtsgiinKodFlow() {
 
   const father = details.fatherBirthday ? lifePath(details.fatherBirthday) : 0, child = details.birthday ? lifePath(details.birthday) : 0;
   const heading = father && child ? pairHeading(father, child) : null;
-  const price = money(invoice?.amount ?? config?.etsgiinPrice ?? 20000);
+  const price = money(invoice?.amount ?? config?.etsgiinPrice ?? 10000);
 
   return <div className="flow-card">
     <ol className="stepper" aria-label="Үйл явц"><li aria-current={step === "dates" ? "step" : undefined}>01 <span>Огноо</span></li><li aria-current={step === "details" ? "step" : undefined}>02 <span>Код</span></li><li aria-current={step === "pay" ? "step" : undefined}>03 <span>Төлбөр</span></li><li aria-current={step === "report" ? "step" : undefined}>04 <span>Тайлал</span></li></ol>

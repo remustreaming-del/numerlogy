@@ -75,7 +75,7 @@ Mongolian copy is calm, direct, and non-deterministic. Interpretations describe 
 
 ## Product and price settings
 
-- Эцгийн код: `ETSGIIN_PRICE_MNT = 20000`
+- Эцгийн код: `ETSGIIN_PRICE_MNT = 10000`
 - Натал зураг wheel + Sun/Moon/Ascendant: free
 - Натал бүрэн тайлал: `NATAL_PRICE_MNT = 20000`
 

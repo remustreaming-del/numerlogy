@@ -8,7 +8,7 @@ import { isFullyPaid, type PaymentRow } from "@/lib/payment";
 export function setting(key: string) { return (env as Record<string, unknown>)[key] as string | undefined; }
 export function paymentReady() { return setting("PAYMENTS_ENABLED") === "true" && ["QPAY_CLIENT_ID", "QPAY_CLIENT_SECRET", "QPAY_INVOICE_CODE", "PUBLIC_ORIGIN"].every(key => !!setting(key)); }
 // Separate server-owned prices. Browser-supplied amounts are always ignored.
-export const ETSGIIN_PRICE_MNT = 20000;
+export const ETSGIIN_PRICE_MNT = 10000;
 export const NATAL_PRICE_MNT = 20000;
 export function price(product: "etsgiin-kod" | "natal" = "etsgiin-kod") { return product === "natal" ? NATAL_PRICE_MNT : ETSGIIN_PRICE_MNT; }
 export function json(data: unknown, status = 200) { return Response.json(data, { status, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } }); }
