@@ -1,9 +1,10 @@
 import type { NatalReading } from "./natal/reading-types.ts";
 import { READING_GROUPS } from "./natal/reading-types.ts";
-import { POINT_ABBR, SIGN_ABBR, house, type PointId } from "./natal/terms.ts";
+import { drawChartWheel } from "./natal-wheel.ts";
+import { house } from "./natal/terms.ts";
 
 // Noto Sans has no astrological glyphs: they are replaced or dropped so the PDF never shows empty boxes.
-const sanitize = (text: string) => text.replace(/[☉☽☿♀♂♃♄♅♆♇☊♈-♓]/gu, "").replace(/☌/g, "—").replace(/[⚹△□☍]/g, "·").replace(/≈/g, "~").replace(/−/g, "-").replace(/\s{2,}/g, " ").trim();
+export const sanitize = (text: string) => text.replace(/[☉☽☿♀♂♃♄♅♆♇☊♈-♓]/gu, "").replace(/☌/g, "—").replace(/[⚹△□☍]/g, "·").replace(/≈/g, "~").replace(/−/g, "-").replace(/\s{2,}/g, " ").trim();
 
 export async function makeNatalPdf(reading: NatalReading, fontBytes: ArrayBuffer | Uint8Array) {
   const [{ PDFDocument, rgb }, { default: fontkit }] = await Promise.all([import("pdf-lib"), import("@pdf-lib/fontkit")]);
@@ -29,7 +30,6 @@ export async function makeNatalPdf(reading: NatalReading, fontBytes: ArrayBuffer
     if (row) draw();
     y -= after;
   };
-  const center = (raw: string, size: number, color: typeof ink, atY: number) => { const text = sanitize(raw); page.drawText(text, { x: (W - measure(text, size)) / 2, y: atY, size, font, color }); };
 
   // ---- cover
   write("TOONO · НАТАЛ ЗУРАГ", 10, gold, 18);
@@ -38,43 +38,8 @@ export async function makeNatalPdf(reading: NatalReading, fontBytes: ArrayBuffer
   write(`${reading.input.birthDate} · ${reading.input.unknownTime ? "төрсөн цаггүй" : reading.input.birthTime} · ${reading.city.name}`, 9, muted, 10);
 
   // ---- wheel (vectors only)
-  const cx = W / 2, cy = 520, outer = 150, zodiacInner = 126, inner = 78;
-  const rotation = reading.ascendant?.longitude ?? 0;
-  const pt = (lon: number, radius: number) => { const a = (180 - (((lon - rotation) % 360) + 360) % 360) * Math.PI / 180; return { x: cx + Math.cos(a) * radius, y: cy - Math.sin(a) * radius }; };
-  page.drawCircle({ x: cx, y: cy, size: outer, borderColor: gold, borderWidth: 1 });
-  page.drawCircle({ x: cx, y: cy, size: zodiacInner, borderColor: line, borderWidth: .8 });
-  page.drawCircle({ x: cx, y: cy, size: inner, borderColor: line, borderWidth: .8 });
-  for (let index = 0; index < 12; index++) {
-    page.drawLine({ start: pt(index * 30, zodiacInner), end: pt(index * 30, outer), color: line, thickness: .8 });
-    const label = pt(index * 30 + 15, (outer + zodiacInner) / 2), text = SIGN_ABBR[index];
-    page.drawText(text, { x: label.x - measure(text, 8) / 2, y: label.y - 3, size: 8, font, color: gold });
-  }
-  reading.houses?.forEach((cusp, index) => {
-    page.drawLine({ start: pt(cusp.longitude, inner), end: pt(cusp.longitude, zodiacInner), color: index % 3 === 0 ? gold : line, thickness: index % 3 === 0 ? 1.1 : .5 });
-    const nextCusp = reading.houses![(index + 1) % 12].longitude, middle = cusp.longitude + ((((nextCusp - cusp.longitude) % 360) + 360) % 360) / 2, label = pt(middle, inner + 8), text = String(cusp.house);
-    page.drawText(text, { x: label.x - measure(text, 6) / 2, y: label.y - 2, size: 6, font, color: muted });
-  });
-  for (const aspect of reading.aspects) {
-    if (aspect.type === "conjunction") continue;
-    const a = reading.planets.find((planet) => planet.id === aspect.a)!, b = reading.planets.find((planet) => planet.id === aspect.b)!;
-    page.drawLine({ start: pt(a.longitude, inner - 3), end: pt(b.longitude, inner - 3), color: aspect.type === "trine" || aspect.type === "sextile" ? harmonious : challenging, thickness: .6, opacity: Math.max(.3, 1 - aspect.orb / aspect.maxOrb) });
-  }
-  if (reading.ascendant && reading.midheaven) {
-    page.drawLine({ start: pt(reading.ascendant.longitude, outer), end: pt(reading.ascendant.longitude + 180, outer), color: gold, thickness: 1.2 });
-    page.drawLine({ start: pt(reading.midheaven.longitude, outer), end: pt(reading.midheaven.longitude + 180, outer), color: gold, thickness: .8, dashArray: [3, 2] });
-    for (const [lon, text] of [[reading.ascendant.longitude, "ASC"], [reading.midheaven.longitude, "MC"]] as const) { const p = pt(lon, outer + 12); page.drawText(text, { x: p.x - measure(text, 7) / 2, y: p.y - 2.5, size: 7, font, color: gold }); }
-  }
-  const bodies = [...reading.planets, reading.node].sort((a, b) => a.longitude - b.longitude);
-  let previous = -99, lane = 0;
-  for (const body of bodies) {
-    lane = body.longitude - previous < 8 ? (lane + 1) % 3 : 0; previous = body.longitude;
-    const radius = zodiacInner - 14 - lane * 12, p = pt(body.longitude, radius), tick = pt(body.longitude, zodiacInner);
-    page.drawLine({ start: tick, end: pt(body.longitude, zodiacInner - 5), color: ink, thickness: .8 });
-    page.drawCircle({ x: p.x, y: p.y, size: 7, color: panel, borderColor: gold, borderWidth: .7 });
-    const text = POINT_ABBR[body.id as PointId];
-    page.drawText(text, { x: p.x - measure(text, 6) / 2, y: p.y - 2, size: 6, font, color: ink });
-  }
-  if (!reading.houses) center("ЦАГГҮЙ", 9, muted, cy - 3);
+  const cx = W / 2, cy = 520, outer = 150;
+  drawChartWheel({ page, reading, font, measure, cx, cy, outer, colors: { ink, muted, gold, panel, line, harmonious, challenging } });
 
   // ---- positions table
   y = cy - outer - 34;

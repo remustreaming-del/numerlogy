@@ -20,14 +20,14 @@ const databaseId = process.env.D1_DATABASE_ID || SITE_CREATOR_PLACEHOLDER_DATABA
 const localBindingConfig = {
   name: "toono",
   main: "./build/sites-worker.ts",
-  // Custom domains only for own-account deploys; the apex redirects to www in sites-worker.ts.
+  // Custom domains only for own-account deploys; www redirects to the apex in sites-worker.ts.
   ...(process.env.D1_DATABASE_ID
     ? {
         // Keep a recovery address available if the custom domain loses DNS.
         workers_dev: true,
         routes: [
-          { pattern: "www.numpath.site", custom_domain: true },
-          { pattern: "numpath.site", custom_domain: true },
+          { pattern: "www.discoveryou.site", custom_domain: true },
+          { pattern: "discoveryou.site", custom_domain: true },
         ],
       }
     : {}),

@@ -26,5 +26,9 @@
   {
     "reason": "эрсдэл and its case forms are retained; attested in the Bank of Mongolia's terminology dictionary at https://etoli.mn/.",
     "words": ["эрсдэл", "эрсдэлд", "эрсдэлийг", "эрсдэлийн", "эрсдэлтэй", "эрсдэлээс"]
+  },
+  {
+    "reason": "Genitive forms of the year animals Хулгана and Мичин written at sentence start in lib/natal/content/mongol-year.ts; the lower-case forms are missing from the packaged dictionary.",
+    "words": ["хулганы", "мичингийн"]
   }
 ]

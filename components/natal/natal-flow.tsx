@@ -128,6 +128,16 @@ export function NatalFlow() {
     finally { setBusy(false); }
   }
 
+  async function downloadPoster() {
+    if (!reading) return;
+    setBusy(true);
+    try {
+      const [{ makeNatalPoster }, font] = await Promise.all([import("@/lib/natal-poster"), fetch("/fonts/NotoSans-Regular.ttf")]);
+      downloadFile(await makeNatalPoster(reading, await font.arrayBuffer()) as BlobPart, "application/pdf", `natal-poster-A3-${reading.input.birthDate}.pdf`);
+    } catch { setError("Постер бэлтгэж чадсангүй. Дахин оролдоно уу."); }
+    finally { setBusy(false); }
+  }
+
   const price = money(config?.natalPrice ?? 20000);
   return <>
     {!chart && <form className="natal-form" onSubmit={calculate} noValidate>
@@ -196,7 +206,7 @@ export function NatalFlow() {
 
       {reading && <>
         <ReadingView reading={reading} />
-        <div className="download-row"><button className="button primary" disabled={busy} onClick={download}><Download aria-hidden="true" />{busy ? "Бэлтгэж байна…" : "Зурагтай PDF татах"}</button></div>
+        <div className="download-row"><button className="button primary" disabled={busy} onClick={download}><Download aria-hidden="true" />{busy ? "Бэлтгэж байна…" : "Зурагтай PDF татах"}</button><button className="button" disabled={busy} onClick={downloadPoster}><Download aria-hidden="true" />A3 постер татах</button></div>
       </>}
     </section>}
     {error && <p className="message error" role="alert" tabIndex={-1} ref={errorRef}>{error}</p>}

@@ -1,6 +1,6 @@
 import type { Report } from "./numerology.ts";
 
-const SITE = "https://www.numpath.site";
+const SITE = "https://discoveryou.site";
 const escape = (value: string) => value.replace(/[&<>"']/g, ch => `&#${ch.charCodeAt(0)};`);
 const pad = (n: number) => String(n).padStart(2, "0");
 

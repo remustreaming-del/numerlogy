@@ -6,7 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs tests/mongolian.test.mjs",
+    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs tests/mongolian.test.mjs tests/forecast.test.mjs",
     "test:language": "node scripts/mongolian-quality.mjs && node --experimental-strip-types --test tests/mongolian.test.mjs tests/natal-content.test.mjs",
     "lint:mongolian": "node scripts/mongolian-quality.mjs",
     "spellcheck:mongolian": "node scripts/mongolian-quality.mjs --spelling",

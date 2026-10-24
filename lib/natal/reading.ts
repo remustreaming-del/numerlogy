@@ -9,6 +9,7 @@ import {
 } from "./content/overview.ts";
 import { PLANET_IN_HOUSE } from "./content/planets-in-houses.ts";
 import { PLANET_IN_SIGN } from "./content/planets-in-signs.ts";
+import { forecastSections, mongolYearOfReading, mongolYearSections } from "./extra-sections.ts";
 import { FREE_ELEMENT } from "./free.ts";
 import { READING_GROUPS, type NatalReading, type ReadingGroup, type ReadingSection } from "./reading-types.ts";
 import {
@@ -16,7 +17,7 @@ import {
   house, inSign, signPhrase, type Element, type PlanetId, type PointId,
 } from "./terms.ts";
 
-export const CONTENT_VERSION = "2026-10-24.v3";
+export const CONTENT_VERSION = "2026-10-24.v4";
 
 export { READING_GROUPS, type NatalReading, type ReadingGroup, type ReadingSection };
 
@@ -290,7 +291,8 @@ function methodSection(chart: NatalChart): ReadingSection {
 
 // ---------------------------------------------------------------- reading
 
-export function buildNatalReading(chart: NatalChart): NatalReading {
+/** `now` fixes the start of the 12-month forecast; it is stored with the reading so a saved report never changes. */
+export function buildNatalReading(chart: NatalChart, now: Date = new Date()): NatalReading {
   const notices = chart.notices.filter((notice) => notice.kind !== "placidus" && notice.kind !== "asc-sensitive").map((notice) => notice.text);
   const intro: ReadingSection = { id: "intro", group: "intro", title: "Таны тэнгэрийн зураг", paragraphs: [...READING_COPY.intro, ...notices] };
   const byGroup = (ids: PlanetId[], group: ReadingSection["group"]) => chart.planets.filter((planet) => ids.includes(planet.id as PlanetId)).map((planet) => planetSection(chart, planet, group));
@@ -307,13 +309,15 @@ export function buildNatalReading(chart: NatalChart): NatalReading {
     ...aspectSections(chart),
     ...houseSections(chart),
     ...synthesisSections(chart),
+    ...mongolYearSections(chart, now),
+    ...forecastSections(chart, now),
     methodSection(chart),
   ];
-  return { ...chart, contentVersion: CONTENT_VERSION, sections };
+  return { ...chart, contentVersion: CONTENT_VERSION, sections, mongolYear: mongolYearOfReading(chart), forecastFrom: now.toISOString() };
 }
 
-export function createNatalReading(input: NatalInput): NatalReading {
-  return buildNatalReading(calculateNatalChart(input));
+export function createNatalReading(input: NatalInput, now: Date = new Date()): NatalReading {
+  return buildNatalReading(calculateNatalChart(input), now);
 }
 
 /** Paragraph list for readings stored before v2 (single `body`). */

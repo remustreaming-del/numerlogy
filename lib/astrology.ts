@@ -245,7 +245,7 @@ function houseFor(longitude: number, cusps: number[]) {
 }
 
 /** Apparent geocentric ecliptic longitude of date (light-time and aberration corrected). */
-function planetLongitude(id: PlanetId, date: Date) {
+export function planetLongitude(id: PlanetId, date: Date) {
   return id === "sun" ? SunPosition(date).elon : Ecliptic(GeoVector(BODIES[id]!, date, true)).elon;
 }
 

@@ -57,14 +57,14 @@ Open `http://127.0.0.1:5173`. Local variables live in ignored `.dev.vars`.
 
 The production Worker has a recovery address at `https://toono.numpath-toono.workers.dev`.
 Own-account builds explicitly keep `workers_dev` enabled alongside the custom domains.
-If `numpath.site` stops resolving, check the domain registration and nameserver
-delegation before redeploying the app. The assigned Cloudflare nameservers are
-`jaziel.ns.cloudflare.com` and `teagan.ns.cloudflare.com`.
+The primary domain is `https://discoveryou.site`; `www.discoveryou.site` redirects
+to it. If it stops resolving, check the domain registration and nameserver
+delegation before redeploying the app.
 
 The `PUBLIC_ORIGIN` Worker secret controls new QPay callback URLs and natal PDF
 font downloads. If the recovery address becomes the operating address, set this
 secret to that HTTPS origin after its certificate is active; restore it to
-`https://www.numpath.site` when the domain is restored. Existing QPay invoices
+`https://discoveryou.site` when the domain is restored. Existing QPay invoices
 retain their original callback URL; browser payment polling remains available.
 
 After building, apply D1 migrations in order for a fresh local database:
