@@ -10,7 +10,22 @@
     "usage_notes": "Анх гарахдаа «төрсөн агшны тэнгэрийн зураг» гэж тайлбарлана. «Чарт», «хороскоп» хэрэглэхгүй.",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "натал зураг",
+      "gen": "натал зургийн",
+      "dat": "натал зурагт",
+      "acc": "натал зургийг",
+      "abl": "натал зургаас",
+      "ins": "натал зургаар",
+      "com": "натал зурагтай",
+      "dir": "натал зураг руу"
+    },
+    "banned_stems": [
+      "чарт",
+      "хороскоп"
+    ],
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet",
@@ -21,7 +36,21 @@
     "usage_notes": "«Гариг» биш «гараг».",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "гараг",
+      "gen": "гарагийн",
+      "dat": "гарагт",
+      "acc": "гарагийг",
+      "abl": "гарагаас",
+      "ins": "гарагаар",
+      "com": "гарагтай",
+      "dir": "гараг руу"
+    },
+    "banned_stems": [
+      "гариг"
+    ],
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign",
@@ -34,7 +63,18 @@
     "usage_notes": "Харьяалахын тийн ялгалтай: «Хонины ордод».",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "орд",
+      "gen": "ордын",
+      "dat": "ордод",
+      "acc": "ордыг",
+      "abl": "ордоос",
+      "ins": "ордоор",
+      "com": "ордтой",
+      "dir": "орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "house",
@@ -45,7 +85,18 @@
     "usage_notes": "Бичвэрт «нэгдүгээр байшинд», хүснэгтэд «1-р байшин». «Гэр» хэрэглэхгүй.",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "байшин",
+      "gen": "байшингийн",
+      "dat": "байшинд",
+      "acc": "байшинг",
+      "abl": "байшингаас",
+      "ins": "байшингаар",
+      "com": "байшинтай",
+      "dir": "байшин руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "ascendant",
@@ -59,7 +110,18 @@
     "usage_notes": "Анх: «Мандах орд буюу Асцендент». Дараа нь зөвхөн «Мандах орд».",
     "category": "angle",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Мандах орд",
+      "gen": "Мандах ордын",
+      "dat": "Мандах ордод",
+      "acc": "Мандах ордыг",
+      "abl": "Мандах ордоос",
+      "ins": "Мандах ордоор",
+      "com": "Мандах ордтой",
+      "dir": "Мандах орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "descendant",
@@ -72,7 +134,18 @@
     "usage_notes": "",
     "category": "angle",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Шингэх цэг",
+      "gen": "Шингэх цэгийн",
+      "dat": "Шингэх цэгт",
+      "acc": "Шингэх цэгийг",
+      "abl": "Шингэх цэгээс",
+      "ins": "Шингэх цэгээр",
+      "com": "Шингэх цэгтэй",
+      "dir": "Шингэх цэг рүү"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "midheaven",
@@ -85,7 +158,18 @@
     "usage_notes": "",
     "category": "angle",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Тэнгэрийн оргил",
+      "gen": "Тэнгэрийн оргилын",
+      "dat": "Тэнгэрийн оргилд",
+      "acc": "Тэнгэрийн оргилыг",
+      "abl": "Тэнгэрийн оргилоос",
+      "ins": "Тэнгэрийн оргилоор",
+      "com": "Тэнгэрийн оргилтой",
+      "dir": "Тэнгэрийн оргил руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "imum_coeli",
@@ -98,7 +182,18 @@
     "usage_notes": "",
     "category": "angle",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Тэнгэрийн ёроол",
+      "gen": "Тэнгэрийн ёроолын",
+      "dat": "Тэнгэрийн ёроолд",
+      "acc": "Тэнгэрийн ёроолыг",
+      "abl": "Тэнгэрийн ёроолоос",
+      "ins": "Тэнгэрийн ёроолоор",
+      "com": "Тэнгэрийн ёроолтой",
+      "dir": "Тэнгэрийн ёроол руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect",
@@ -109,7 +204,18 @@
     "usage_notes": "",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "аспект",
+      "gen": "аспектын",
+      "dat": "аспектад",
+      "acc": "аспектыг",
+      "abl": "аспектаас",
+      "ins": "аспектаар",
+      "com": "аспекттай",
+      "dir": "аспект руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect.conjunction",
@@ -120,7 +226,21 @@
     "usage_notes": "",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Нэгдэл",
+      "gen": "Нэгдлийн",
+      "dat": "Нэгдэлд",
+      "acc": "Нэгдлийг",
+      "abl": "Нэгдлээс",
+      "ins": "Нэгдлээр",
+      "com": "Нэгдэлтэй",
+      "dir": "Нэгдэл рүү"
+    },
+    "banned_stems": [
+      "конжанкшн"
+    ],
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect.sextile",
@@ -131,7 +251,18 @@
     "usage_notes": "Боломжийг идэвхтэй ашиглах шаардлагатай гэж тайлбарлана.",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Секстиль",
+      "gen": "Секстилийн",
+      "dat": "Секстильд",
+      "acc": "Секстилийг",
+      "abl": "Секстилээс",
+      "ins": "Секстилээр",
+      "com": "Секстильтэй",
+      "dir": "Секстиль рүү"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect.square",
@@ -142,7 +273,18 @@
     "usage_notes": "Хурцадмал боловч хөдөлгөгч; айлгах үг хэрэглэхгүй.",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Квадрат",
+      "gen": "Квадратын",
+      "dat": "Квадратад",
+      "acc": "Квадратыг",
+      "abl": "Квадратаас",
+      "ins": "Квадратаар",
+      "com": "Квадраттай",
+      "dir": "Квадрат руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect.trine",
@@ -155,7 +297,18 @@
     "usage_notes": "Эерэг боломж боловч үр дүнг баталгаатай гэж хэлэхгүй.",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Трин",
+      "gen": "Трины",
+      "dat": "Тринд",
+      "acc": "Триныг",
+      "abl": "Тринээс",
+      "ins": "Тринээр",
+      "com": "Тринтэй",
+      "dir": "Трин рүү"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "aspect.opposition",
@@ -166,7 +319,21 @@
     "usage_notes": "«Оппозиц» хэрэглэхгүй.",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Эсрэгцэл",
+      "gen": "Эсрэгцлийн",
+      "dat": "Эсрэгцэлд",
+      "acc": "Эсрэгцлийг",
+      "abl": "Эсрэгцлээс",
+      "ins": "Эсрэгцлээр",
+      "com": "Эсрэгцэлтэй",
+      "dir": "Эсрэгцэл рүү"
+    },
+    "banned_stems": [
+      "оппозиц"
+    ],
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "orb",
@@ -177,7 +344,18 @@
     "usage_notes": "«Орб 1.4°».",
     "category": "aspect",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "орб",
+      "gen": "орбын",
+      "dat": "орбод",
+      "acc": "орбыг",
+      "abl": "орбоос",
+      "ins": "орбоор",
+      "com": "орбтой",
+      "dir": "орб руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "retrograde",
@@ -188,7 +366,18 @@
     "usage_notes": "",
     "category": "motion",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "ретроград",
+      "gen": "ретроградын",
+      "dat": "ретроградад",
+      "acc": "ретроградыг",
+      "abl": "ретроградаас",
+      "ins": "ретроградаар",
+      "com": "ретроградтай",
+      "dir": "ретроград руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "north_node",
@@ -201,7 +390,18 @@
     "usage_notes": "",
     "category": "point",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Сарны хойд зангилаа",
+      "gen": "Сарны хойд зангилааны",
+      "dat": "Сарны хойд зангилаанд",
+      "acc": "Сарны хойд зангилааг",
+      "abl": "Сарны хойд зангилаанаас",
+      "ins": "Сарны хойд зангилаагаар",
+      "com": "Сарны хойд зангилаатай",
+      "dir": "Сарны хойд зангилаа руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "chart_ruler",
@@ -212,7 +412,18 @@
     "usage_notes": "",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "зургийн эзэн гараг",
+      "gen": "зургийн эзэн гарагийн",
+      "dat": "зургийн эзэн гарагт",
+      "acc": "зургийн эзэн гарагийг",
+      "abl": "зургийн эзэн гарагаас",
+      "ins": "зургийн эзэн гарагаар",
+      "com": "зургийн эзэн гарагтай",
+      "dir": "зургийн эзэн гараг руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign_ruler",
@@ -223,7 +434,18 @@
     "usage_notes": "",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "ордын эзэн гараг",
+      "gen": "ордын эзэн гарагийн",
+      "dat": "ордын эзэн гарагт",
+      "acc": "ордын эзэн гарагийг",
+      "abl": "ордын эзэн гарагаас",
+      "ins": "ордын эзэн гарагаар",
+      "com": "ордын эзэн гарагтай",
+      "dir": "ордын эзэн гараг руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "element",
@@ -234,7 +456,18 @@
     "usage_notes": "",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "махбод",
+      "gen": "махбодын",
+      "dat": "махбодод",
+      "acc": "махбодыг",
+      "abl": "махбодоос",
+      "ins": "махбодоор",
+      "com": "махбодтой",
+      "dir": "махбод руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "modality",
@@ -245,7 +478,18 @@
     "usage_notes": "",
     "category": "concept",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "хэв шинж",
+      "gen": "хэв шинжийн",
+      "dat": "хэв шинжид",
+      "acc": "хэв шинжийг",
+      "abl": "хэв шинжээс",
+      "ins": "хэв шинжээр",
+      "com": "хэв шинжтэй",
+      "dir": "хэв шинж рүү"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "stellium",
@@ -258,7 +502,18 @@
     "usage_notes": "",
     "category": "pattern",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "стеллиум",
+      "gen": "стеллиумын",
+      "dat": "стеллиумд",
+      "acc": "стеллиумыг",
+      "abl": "стеллиумаас",
+      "ins": "стеллиумаар",
+      "com": "стеллиумтай",
+      "dir": "стеллиум руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "dignity.domicile",
@@ -269,7 +524,18 @@
     "usage_notes": "",
     "category": "dignity",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "өөрийн орд",
+      "gen": "өөрийн ордын",
+      "dat": "өөрийн ордод",
+      "acc": "өөрийн ордыг",
+      "abl": "өөрийн ордоос",
+      "ins": "өөрийн ордоор",
+      "com": "өөрийн ордтой",
+      "dir": "өөрийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "dignity.exaltation",
@@ -280,7 +546,18 @@
     "usage_notes": "",
     "category": "dignity",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "өргөмжлөгдсөн орд",
+      "gen": "өргөмжлөгдсөн ордын",
+      "dat": "өргөмжлөгдсөн ордод",
+      "acc": "өргөмжлөгдсөн ордыг",
+      "abl": "өргөмжлөгдсөн ордоос",
+      "ins": "өргөмжлөгдсөн ордоор",
+      "com": "өргөмжлөгдсөн ордтой",
+      "dir": "өргөмжлөгдсөн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "dignity.detriment",
@@ -291,7 +568,18 @@
     "usage_notes": "Сөрөг үнэлгээгүй тайлбарлана.",
     "category": "dignity",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "эсрэг орд",
+      "gen": "эсрэг ордын",
+      "dat": "эсрэг ордод",
+      "acc": "эсрэг ордыг",
+      "abl": "эсрэг ордоос",
+      "ins": "эсрэг ордоор",
+      "com": "эсрэг ордтой",
+      "dir": "эсрэг орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "dignity.fall",
@@ -302,7 +590,18 @@
     "usage_notes": "Сөрөг үнэлгээгүй тайлбарлана.",
     "category": "dignity",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "уналтын орд",
+      "gen": "уналтын ордын",
+      "dat": "уналтын ордод",
+      "acc": "уналтын ордыг",
+      "abl": "уналтын ордоос",
+      "ins": "уналтын ордоор",
+      "com": "уналтын ордтой",
+      "dir": "уналтын орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "tropical_zodiac",
@@ -313,7 +612,18 @@
     "usage_notes": "",
     "category": "method",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "тропик зодиак",
+      "gen": "тропик зодиакийн",
+      "dat": "тропик зодиакт",
+      "acc": "тропик зодиакийг",
+      "abl": "тропик зодиакаас",
+      "ins": "тропик зодиакаар",
+      "com": "тропик зодиактай",
+      "dir": "тропик зодиак руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "placidus",
@@ -324,7 +634,18 @@
     "usage_notes": "",
     "category": "method",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Плацидус",
+      "gen": "Плацидусын",
+      "dat": "Плацидуст",
+      "acc": "Плацидусыг",
+      "abl": "Плацидусаас",
+      "ins": "Плацидусаар",
+      "com": "Плацидустай",
+      "dir": "Плацидус руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "whole_sign",
@@ -335,7 +656,18 @@
     "usage_notes": "",
     "category": "method",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Бүхэл ордын систем",
+      "gen": "Бүхэл ордын системийн",
+      "dat": "Бүхэл ордын системд",
+      "acc": "Бүхэл ордын системийг",
+      "abl": "Бүхэл ордын системээс",
+      "ins": "Бүхэл ордын системээр",
+      "com": "Бүхэл ордын системтэй",
+      "dir": "Бүхэл ордын систем рүү"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "synastry",
@@ -346,7 +678,18 @@
     "usage_notes": "Ирээдүйн бүтээгдэхүүн.",
     "category": "method",
     "status": "reviewed",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "хоёр зургийн харьцуулалт",
+      "gen": "хоёр зургийн харьцуулалтын",
+      "dat": "хоёр зургийн харьцуулалтад",
+      "acc": "хоёр зургийн харьцуулалтыг",
+      "abl": "хоёр зургийн харьцуулалтаас",
+      "ins": "хоёр зургийн харьцуулалтаар",
+      "com": "хоёр зургийн харьцуулалттай",
+      "dir": "хоёр зургийн харьцуулалт руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.sun",
@@ -357,7 +700,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Нар",
+      "gen": "Нарны",
+      "dat": "Нарт",
+      "acc": "Нарыг",
+      "abl": "Нараас",
+      "ins": "Нараар",
+      "com": "Нартай",
+      "dir": "Нар руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.moon",
@@ -368,7 +722,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Сар",
+      "gen": "Сарны",
+      "dat": "Сард",
+      "acc": "Сарыг",
+      "abl": "Сараас",
+      "ins": "Сараар",
+      "com": "Сартай",
+      "dir": "Сар руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.mercury",
@@ -379,7 +744,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Буд",
+      "gen": "Будын",
+      "dat": "Буд гарагт",
+      "acc": "Будыг",
+      "abl": "Буд гарагаас",
+      "ins": "Будаар",
+      "com": "Будтай",
+      "dir": "Буд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.venus",
@@ -390,7 +766,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Сугар",
+      "gen": "Сугарын",
+      "dat": "Сугарт",
+      "acc": "Сугарыг",
+      "abl": "Сугараас",
+      "ins": "Сугараар",
+      "com": "Сугартай",
+      "dir": "Сугар руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.mars",
@@ -401,7 +788,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Ангараг",
+      "gen": "Ангарагийн",
+      "dat": "Ангарагт",
+      "acc": "Ангарагийг",
+      "abl": "Ангарагаас",
+      "ins": "Ангарагаар",
+      "com": "Ангарагтай",
+      "dir": "Ангараг руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.jupiter",
@@ -412,7 +810,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Бархасбадь",
+      "gen": "Бархасбадийн",
+      "dat": "Бархасбадьд",
+      "acc": "Бархасбадийг",
+      "abl": "Бархасбадиас",
+      "ins": "Бархасбадиар",
+      "com": "Бархасбадьтай",
+      "dir": "Бархасбадь руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.saturn",
@@ -423,7 +832,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Санчир",
+      "gen": "Санчирын",
+      "dat": "Санчирт",
+      "acc": "Санчирыг",
+      "abl": "Санчираас",
+      "ins": "Санчираар",
+      "com": "Санчиртай",
+      "dir": "Санчир руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.uranus",
@@ -434,7 +854,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Тэнгэрийн ван",
+      "gen": "Тэнгэрийн вангийн",
+      "dat": "Тэнгэрийн ванд",
+      "acc": "Тэнгэрийн ванг",
+      "abl": "Тэнгэрийн вангаас",
+      "ins": "Тэнгэрийн вангаар",
+      "com": "Тэнгэрийн вантай",
+      "dir": "Тэнгэрийн ван руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.neptune",
@@ -445,7 +876,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Далайн ван",
+      "gen": "Далайн вангийн",
+      "dat": "Далайн ванд",
+      "acc": "Далайн ванг",
+      "abl": "Далайн вангаас",
+      "ins": "Далайн вангаар",
+      "com": "Далайн вантай",
+      "dir": "Далайн ван руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "planet.pluto",
@@ -456,7 +898,18 @@
     "usage_notes": "Тийн ялгалыг lib/natal/terms.ts POINT_FORMS-оос авна.",
     "category": "planet",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Плутон",
+      "gen": "Плутоны",
+      "dat": "Плутонд",
+      "acc": "Плутоныг",
+      "abl": "Плутоноос",
+      "ins": "Плутоноор",
+      "com": "Плутонтой",
+      "dir": "Плутон руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.aries",
@@ -469,7 +922,28 @@
     "usage_notes": "Бичвэрт «Хонины ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Хонь",
+      "gen": "Хонины",
+      "dat": "Хонинд",
+      "acc": "Хонийг",
+      "abl": "Хониноос",
+      "ins": "Хониор",
+      "com": "Хоньтой",
+      "dir": "Хонь руу"
+    },
+    "phrase_forms": {
+      "nom": "Хонины орд",
+      "gen": "Хонины ордын",
+      "dat": "Хонины ордод",
+      "acc": "Хонины ордыг",
+      "abl": "Хонины ордоос",
+      "ins": "Хонины ордоор",
+      "com": "Хонины ордтой",
+      "dir": "Хонины орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.taurus",
@@ -482,7 +956,28 @@
     "usage_notes": "Бичвэрт «Үхрийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Үхэр",
+      "gen": "Үхрийн",
+      "dat": "Үхэрт",
+      "acc": "Үхрийг",
+      "abl": "Үхрээс",
+      "ins": "Үхрээр",
+      "com": "Үхэртэй",
+      "dir": "Үхэр рүү"
+    },
+    "phrase_forms": {
+      "nom": "Үхрийн орд",
+      "gen": "Үхрийн ордын",
+      "dat": "Үхрийн ордод",
+      "acc": "Үхрийн ордыг",
+      "abl": "Үхрийн ордоос",
+      "ins": "Үхрийн ордоор",
+      "com": "Үхрийн ордтой",
+      "dir": "Үхрийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.gemini",
@@ -495,7 +990,28 @@
     "usage_notes": "Бичвэрт «Ихрийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Ихэр",
+      "gen": "Ихрийн",
+      "dat": "Ихэрт",
+      "acc": "Ихрийг",
+      "abl": "Ихрээс",
+      "ins": "Ихрээр",
+      "com": "Ихэртэй",
+      "dir": "Ихэр рүү"
+    },
+    "phrase_forms": {
+      "nom": "Ихрийн орд",
+      "gen": "Ихрийн ордын",
+      "dat": "Ихрийн ордод",
+      "acc": "Ихрийн ордыг",
+      "abl": "Ихрийн ордоос",
+      "ins": "Ихрийн ордоор",
+      "com": "Ихрийн ордтой",
+      "dir": "Ихрийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.cancer",
@@ -508,7 +1024,28 @@
     "usage_notes": "Бичвэрт «Мэлхийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Мэлхий",
+      "gen": "Мэлхийн",
+      "dat": "Мэлхийд",
+      "acc": "Мэлхийг",
+      "abl": "Мэлхийнээс",
+      "ins": "Мэлхийгээр",
+      "com": "Мэлхийтэй",
+      "dir": "Мэлхий рүү"
+    },
+    "phrase_forms": {
+      "nom": "Мэлхийн орд",
+      "gen": "Мэлхийн ордын",
+      "dat": "Мэлхийн ордод",
+      "acc": "Мэлхийн ордыг",
+      "abl": "Мэлхийн ордоос",
+      "ins": "Мэлхийн ордоор",
+      "com": "Мэлхийн ордтой",
+      "dir": "Мэлхийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.leo",
@@ -521,7 +1058,28 @@
     "usage_notes": "Бичвэрт «Арслангийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Арслан",
+      "gen": "Арслангийн",
+      "dat": "Арсланд",
+      "acc": "Арсланг",
+      "abl": "Арслангаас",
+      "ins": "Арслангаар",
+      "com": "Арслантай",
+      "dir": "Арслан руу"
+    },
+    "phrase_forms": {
+      "nom": "Арслангийн орд",
+      "gen": "Арслангийн ордын",
+      "dat": "Арслангийн ордод",
+      "acc": "Арслангийн ордыг",
+      "abl": "Арслангийн ордоос",
+      "ins": "Арслангийн ордоор",
+      "com": "Арслангийн ордтой",
+      "dir": "Арслангийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.virgo",
@@ -534,7 +1092,28 @@
     "usage_notes": "Бичвэрт «Охины ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Охин",
+      "gen": "Охины",
+      "dat": "Охинд",
+      "acc": "Охиныг",
+      "abl": "Охиноос",
+      "ins": "Охиноор",
+      "com": "Охинтой",
+      "dir": "Охин руу"
+    },
+    "phrase_forms": {
+      "nom": "Охины орд",
+      "gen": "Охины ордын",
+      "dat": "Охины ордод",
+      "acc": "Охины ордыг",
+      "abl": "Охины ордоос",
+      "ins": "Охины ордоор",
+      "com": "Охины ордтой",
+      "dir": "Охины орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.libra",
@@ -547,7 +1126,28 @@
     "usage_notes": "Бичвэрт «Жинлүүрийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Жинлүүр",
+      "gen": "Жинлүүрийн",
+      "dat": "Жинлүүрт",
+      "acc": "Жинлүүрийг",
+      "abl": "Жинлүүрээс",
+      "ins": "Жинлүүрээр",
+      "com": "Жинлүүртэй",
+      "dir": "Жинлүүр рүү"
+    },
+    "phrase_forms": {
+      "nom": "Жинлүүрийн орд",
+      "gen": "Жинлүүрийн ордын",
+      "dat": "Жинлүүрийн ордод",
+      "acc": "Жинлүүрийн ордыг",
+      "abl": "Жинлүүрийн ордоос",
+      "ins": "Жинлүүрийн ордоор",
+      "com": "Жинлүүрийн ордтой",
+      "dir": "Жинлүүрийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.scorpio",
@@ -560,7 +1160,28 @@
     "usage_notes": "Бичвэрт «Хилэнцийн ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Хилэнц",
+      "gen": "Хилэнцийн",
+      "dat": "Хилэнцэд",
+      "acc": "Хилэнцийг",
+      "abl": "Хилэнцээс",
+      "ins": "Хилэнцээр",
+      "com": "Хилэнцтэй",
+      "dir": "Хилэнц рүү"
+    },
+    "phrase_forms": {
+      "nom": "Хилэнцийн орд",
+      "gen": "Хилэнцийн ордын",
+      "dat": "Хилэнцийн ордод",
+      "acc": "Хилэнцийн ордыг",
+      "abl": "Хилэнцийн ордоос",
+      "ins": "Хилэнцийн ордоор",
+      "com": "Хилэнцийн ордтой",
+      "dir": "Хилэнцийн орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.sagittarius",
@@ -573,20 +1194,62 @@
     "usage_notes": "Бичвэрт «Нумын ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Нум",
+      "gen": "Нумын",
+      "dat": "Нумд",
+      "acc": "Нумыг",
+      "abl": "Нумаас",
+      "ins": "Нумаар",
+      "com": "Нумтай",
+      "dir": "Нум руу"
+    },
+    "phrase_forms": {
+      "nom": "Нумын орд",
+      "gen": "Нумын ордын",
+      "dat": "Нумын ордод",
+      "acc": "Нумын ордыг",
+      "abl": "Нумын ордоос",
+      "ins": "Нумын ордоор",
+      "com": "Нумын ордтой",
+      "dir": "Нумын орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.capricorn",
     "english": "Capricorn",
     "mongolian": "Матар",
     "aliases": [
-      "Матарын орд"
+      "Матрын орд"
     ],
     "definition_mn": "",
-    "usage_notes": "Бичвэрт «Матарын ордод».",
+    "usage_notes": "Бичвэрт «Матрын ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Матар",
+      "gen": "Матрын",
+      "dat": "Матарт",
+      "acc": "Матрыг",
+      "abl": "Матраас",
+      "ins": "Матраар",
+      "com": "Матартай",
+      "dir": "Матар руу"
+    },
+    "phrase_forms": {
+      "nom": "Матрын орд",
+      "gen": "Матрын ордын",
+      "dat": "Матрын ордод",
+      "acc": "Матрын ордыг",
+      "abl": "Матрын ордоос",
+      "ins": "Матрын ордоор",
+      "com": "Матрын ордтой",
+      "dir": "Матрын орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.aquarius",
@@ -599,7 +1262,28 @@
     "usage_notes": "Бичвэрт «Хумхын ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Хумх",
+      "gen": "Хумхын",
+      "dat": "Хумхад",
+      "acc": "Хумхыг",
+      "abl": "Хумхаас",
+      "ins": "Хумхаар",
+      "com": "Хумхтай",
+      "dir": "Хумх руу"
+    },
+    "phrase_forms": {
+      "nom": "Хумхын орд",
+      "gen": "Хумхын ордын",
+      "dat": "Хумхын ордод",
+      "acc": "Хумхын ордыг",
+      "abl": "Хумхын ордоос",
+      "ins": "Хумхын ордоор",
+      "com": "Хумхын ордтой",
+      "dir": "Хумхын орд руу"
+    },
+    "forms_status": "draft-native-review"
   },
   {
     "term_id": "sign.pisces",
@@ -612,6 +1296,27 @@
     "usage_notes": "Бичвэрт «Загасны ордод».",
     "category": "sign",
     "status": "approved",
-    "version": 1
+    "version": 2,
+    "forms": {
+      "nom": "Загас",
+      "gen": "Загасны",
+      "dat": "Загасанд",
+      "acc": "Загасыг",
+      "abl": "Загаснаас",
+      "ins": "Загасаар",
+      "com": "Загастай",
+      "dir": "Загас руу"
+    },
+    "phrase_forms": {
+      "nom": "Загасны орд",
+      "gen": "Загасны ордын",
+      "dat": "Загасны ордод",
+      "acc": "Загасны ордыг",
+      "abl": "Загасны ордоос",
+      "ins": "Загасны ордоор",
+      "com": "Загасны ордтой",
+      "dir": "Загасны орд руу"
+    },
+    "forms_status": "draft-native-review"
   }
 ]

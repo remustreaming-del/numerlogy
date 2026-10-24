@@ -10,6 +10,7 @@ import { PLANET_IN_SIGN } from "../lib/natal/content/planets-in-signs.ts";
 import * as free from "../lib/natal/free.ts";
 import { createNatalReading, selectAspects } from "../lib/natal/reading.ts";
 import { PERSONAL, PLANET_ORDER, POINT_ORDER, SIGN_NAMES, SOCIAL } from "../lib/natal/terms.ts";
+import { terminologyIssues, mixedScriptWords } from "../scripts/mongolian-quality.mjs";
 
 const records = [];
 const collect = (path, value) => {
@@ -63,7 +64,7 @@ test("approved terminology only (glossary in .claude/skills/mongolian-natal-tran
     [/гариг/iu, "гараг"],
     [/\d+-р гэр|[а-яө]+дугаар гэр|[а-яө]+дүгээр гэр/iu, "байшин"],
     [/асцендент/iu, "Мандах орд"],
-    [/\bчарт/iu, "натал зураг / зураг"],
+    [/(?<!\p{L})чарт/iu, "натал зураг / зураг"],
     [/хороскоп/iu, "натал зураг"],
     [/(^|[^\p{L}])чи([^\p{L}]|$)|чиний/iu, "та"],
     [/оппозиц|конжанкшн/iu, "Эсрэгцэл / Нэгдэл"],
@@ -100,7 +101,7 @@ test("no sentence is reused across two interpretation records", () => {
 });
 
 test("sign texts name the right sign in the genitive and planet texts name their planet", () => {
-  const genitive = ["Хонины", "Үхрийн", "Ихрийн", "Мэлхийн", "Арслангийн", "Охины", "Жинлүүрийн", "Хилэнцийн", "Нумын", "Матарын", "Хумхын", "Загасны"];
+  const genitive = ["Хонины", "Үхрийн", "Ихрийн", "Мэлхийн", "Арслангийн", "Охины", "Жинлүүрийн", "Хилэнцийн", "Нумын", "Матрын", "Хумхын", "Загасны"];
   const lead = { sun: "Нар", moon: "Сар", mercury: "Буд", venus: "Сугар", mars: "Ангараг", jupiter: "Бархасбадь", saturn: "Санчир", uranus: "Тэнгэрийн ван", neptune: "Далайн ван", pluto: "Плутон", node: "Сарны хойд зангилаа" };
   for (const id of POINT_ORDER) PLANET_IN_SIGN[id].forEach((text, index) => {
     assert.ok(text.startsWith(lead[id]), `${id}[${index}] should open with ${lead[id]}`);
@@ -130,6 +131,8 @@ test("300 generated readings: complete, clean, chart-faithful and not repetitive
     const reading = createNatalReading(input);
     const all = reading.sections.flatMap((section) => [section.title, section.meta ?? "", ...section.paragraphs]).join("\n");
     assert.doesNotMatch(all, /undefined|null|NaN|\$\{/, input.birthDate);
+    assert.deepEqual(terminologyIssues(all), [], input.birthDate);
+    assert.deepEqual(mixedScriptWords(all), [], input.birthDate);
     assert.ok(reading.sections.length >= (input.unknownTime ? 22 : 40), `${input.birthDate}: ${reading.sections.length} sections`);
     for (const section of reading.sections) assert.ok(section.paragraphs.length > 0 && section.paragraphs.every((paragraph) => paragraph.trim().length > 20), `${input.birthDate} ${section.id}`);
     // Every planet section's meta must match the computed position exactly.

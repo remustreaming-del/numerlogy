@@ -5,8 +5,8 @@ import { Body, e_tilt, Ecliptic, GeoMoonState, GeoVector, MakeTime, RotateState,
 import { DateTime, IANAZone } from "luxon";
 import { cityById, CUSTOM_PLACE_ID } from "./cities.ts";
 import {
-  ANGLE_FORMS, ASPECT_NAMES, GENERATIONAL, PERSONAL, PLANET_ORDER, POINT_FORMS, POINT_GLYPHS, SIGN_ELEMENT, SIGN_GEN, SIGN_GLYPHS, SIGN_MODALITY, SIGN_NAMES,
-  dignityOf, type AspectType, type Dignity, type Element, type Modality, type PlanetId, type PointId,
+  ANGLE_FORMS, ASPECT_NAMES, GENERATIONAL, PERSONAL, PLANET_ORDER, POINT_FORMS, POINT_GLYPHS, SIGN_ELEMENT, SIGN_FORMS, SIGN_GLYPHS, SIGN_MODALITY, SIGN_NAMES,
+  dignityOf, ofSign, signPhrase, type AspectType, type Dignity, type Element, type Modality, type PlanetId, type PointId,
 } from "./natal/terms.ts";
 
 const D2R = Math.PI / 180;
@@ -374,7 +374,6 @@ function ascendantSensitivity(date: Date, latitude: number, longitude: number, s
 
 // ---------------------------------------------------------------- chart
 
-const signGenitive = (index: number) => SIGN_GEN[index];
 
 export function calculateNatalChart(raw: NatalInput): NatalChart {
   const input = validateNatalInput(raw);
@@ -398,7 +397,7 @@ export function calculateNatalChart(raw: NatalInput): NatalChart {
 
   const notices: ChartNotice[] = [];
   if (input.unknownTime) notices.push({ kind: "unknown-time", text: "Төрсөн цаг тодорхойгүй тул гарагуудыг тухайн өдрийн 12:00 цагаар тооцов. Мандах орд, Тэнгэрийн оргил, байшингуудыг зориуд гаргаагүй." });
-  if (moonRange && moonRange.start !== moonRange.end) notices.push({ kind: "moon-sign-change", text: `Сар энэ өдөр ${signGenitive(moonRange.start)} ордоос ${signGenitive(moonRange.end)} орд руу шилжсэн. Төрсөн цагаа мэдвэл Сарны ордыг нарийн тогтооно.` });
+  if (moonRange && moonRange.start !== moonRange.end) notices.push({ kind: "moon-sign-change", text: `Сар энэ өдөр ${SIGN_FORMS[moonRange.start].phrase.abl} ${SIGN_FORMS[moonRange.end].phrase.dir} шилжсэн. Төрсөн цагаа мэдвэл Сарны ордыг нарийн тогтооно.` });
   if (houseSystem === "whole-sign") notices.push({ kind: "whole-sign", text: "Энэ өргөрөгт Плацидусын байшингийн тооцоо утгагүй болдог тул Бүхэл ордын системийг хэрэглэв." });
   if (houseSystem === "placidus") notices.push({ kind: "placidus", text: "Байшингуудыг Плацидусын системээр тооцов." });
   if (gap) notices.push({ kind: "dst-gap", text: `Тухайн өдөр цагийг урагшлуулсан тул ${input.birthTime} гэсэн цаг албан ёсоор байгаагүй. Тооцоонд ${local.toFormat("HH:mm")} гэж авав.` });
@@ -406,9 +405,9 @@ export function calculateNatalChart(raw: NatalInput): NatalChart {
   if (sensitivity && Math.min(sensitivity.earlier, sensitivity.later) <= 15) {
     const minutes = Math.min(sensitivity.earlier, sensitivity.later);
     const neighbour = sensitivity.earlier <= sensitivity.later ? (ascendant!.signIndex + 11) % 12 : (ascendant!.signIndex + 1) % 12;
-    notices.push({ kind: "asc-sensitive", text: `Мандах орд ордын заагт ойрхон байна: төрсөн цаг ${minutes} минутаар ${sensitivity.earlier <= sensitivity.later ? "эрт" : "оройтож"} байсан бол Мандах орд ${signGenitive(neighbour)} орд болох байсан. Төрсний гэрчилгээн дээрх цагаа шалгаарай.` });
+    notices.push({ kind: "asc-sensitive", text: `Мандах орд ордын заагт ойрхон байна: төрсөн цаг ${minutes} минутаар ${sensitivity.earlier <= sensitivity.later ? "эрт" : "оройтож"} байсан бол Мандах орд ${signPhrase(neighbour)} болох байсан. Төрсний гэрчилгээн дээрх цагаа шалгаарай.` });
   }
-  if (sun.degree === 29 || sun.degree === 0) notices.push({ kind: "sun-cusp", text: `Нар ${signGenitive(sun.signIndex)} ордын ${sun.degree}°${pad(sun.minute)}′ буюу хоёр ордын заагт ойрхон байна. Сэтгүүлийн зурхай огноогоор ерөнхийлдөг бол энэ тооцоо төрсөн минут, газраар хийгдсэн.` });
+  if (sun.degree === 29 || sun.degree === 0) notices.push({ kind: "sun-cusp", text: `Нар ${ofSign(sun.signIndex)} ${sun.degree}°${pad(sun.minute)}′ буюу хоёр ордын заагт ойрхон байна. Сэтгүүлийн зурхай огноогоор ерөнхийлдөг бол энэ тооцоо төрсөн минут, газраар хийгдсэн.` });
 
   const balancePoints = ascendant ? [...planets, ascendant] : planets;
   return {

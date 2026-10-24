@@ -23,6 +23,8 @@ const localBindingConfig = {
   // Custom domains only for own-account deploys; the apex redirects to www in sites-worker.ts.
   ...(process.env.D1_DATABASE_ID
     ? {
+        // Keep a recovery address available if the custom domain loses DNS.
+        workers_dev: true,
         routes: [
           { pattern: "www.numpath.site", custom_domain: true },
           { pattern: "numpath.site", custom_domain: true },

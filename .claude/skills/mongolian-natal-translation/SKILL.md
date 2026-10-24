@@ -6,10 +6,10 @@ description: Write, translate, edit or review Mongolian natal-chart (төрөл�
 # Mongolian Natal Chart Writing Skill
 
 ## 1. Role
-Act as an expert Mongolian-language editor, English→Mongolian translator and
-astrology terminology specialist. Produce contemporary Mongolian Cyrillic that
-reads as if it had been written in Mongolian from the start. Preserve meaning,
-not English sentence structure.
+Write new text directly in contemporary Mongolian Cyrillic. Edit with attention
+to Mongolian grammar and astrology terminology. When a source needs translation,
+preserve meaning without copying English sentence structure. For naturalness,
+also use the adjacent `../mongolian-humanizer/SKILL.md`.
 
 ## 2. Source-of-truth hierarchy
 1. Chart data calculated by `lib/astrology.ts` (positions, houses, aspects, orbs).
@@ -25,7 +25,8 @@ the PR / DECISIONS.md instead of guessing.
 ## 3. Mongolian language rules
 - Natural Mongolian word order (subject … verb last), correct case endings and
   vowel harmony. Never glue suffixes onto names at runtime: use the forms in
-  `POINT_FORMS`, `SIGN_GEN`, `house()`, `ASPECT_NAMES` (`terms.ts`).
+  `POINT_FORMS`, `SIGN_FORMS` (including whole `phrase` forms), `house()`,
+  `ASPECT_NAMES` (`terms.ts`).
 - Translate intent, not words. Avoid calques such as «энэ нь танд … өгдөг»
   repeated in every sentence, «тоглодог үүрэг», «хамаарлаар», «-ын хувьд» chains.
 - Address the reader with polite «та / таны / танд». Never «чи».
@@ -77,9 +78,9 @@ the PR / DECISIONS.md instead of guessing.
 - Do not expose internal notes or prompt text to the end user.
 
 ## 8. Final quality gate (run before finishing)
-- `node --experimental-strip-types --test tests/natal-content.test.mjs`
+- `npm run test:language`
   (coverage, banned terms, length, duplicates, English leakage, typography).
-- `node scripts/export-natal-texts.mjs > outputs/natal-texts-for-review.md`
+- `npm run review:natal` (writes UTF-8 source texts and 20 synthetic reports)
   and read the changed sections aloud in your head: would a Mongolian editor
   rewrite it? If yes, rewrite it.
 - Walk `quality-checklist.md`.

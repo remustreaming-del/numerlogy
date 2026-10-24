@@ -7,6 +7,12 @@ import { makePdf } from '../lib/pdf.ts';
 import { message } from '../lib/email-template.ts';
 import { numberTitles, pairHeading } from '../lib/codes.ts';
 import { numbers } from '../lib/content.ts';
+import { qualityIssues } from '../scripts/mongolian-quality.mjs';
+
+test('Mongolian product copy follows the glossary and has no mixed-script words', async () => {
+  const issues = await qualityIssues();
+  assert.deepEqual(issues.map(({file, line, kind, word}) => `${file}:${line} ${kind}: ${word}`), []);
+});
 test('client-side titles match the source texts and the code preview matches the report',()=>{for(let n=1;n<=9;n++)assert.equal(numberTitles[n],numbers[n].title);const r=createReport({fatherName:'A',fatherBirthday:'1962-03-05',name:'B',birthday:'1995-06-13'});const h=pairHeading(8,7);assert.equal(r.pairCode,h.code);assert.equal(r.pairTitle,h.title);});
 const details={fatherName:'Бат',fatherBirthday:'1962-03-05',name:'Anu',birthday:'1995-06-13',email:'anu@example.com'};
 const text=r=>JSON.stringify(r.parts);

@@ -143,7 +143,7 @@ export function NatalFlow() {
         <BirthTimeFields legend="Төрсөн цаг (24 цагаар)" value={form.birthTime} disabled={form.unknownTime} onChange={(value) => change("birthTime", value)} />
         <label className="check-label"><input type="checkbox" checked={form.unknownTime} onChange={(event) => change("unknownTime", event.target.checked)} /><span>Төрсөн цагаа мэдэхгүй</span></label>
       </div>
-      <p className="field-hint">Төрсний гэрчилгээн дээрх цагийг оруулбал хамгийн нарийн. Цаггүй бол Мандах орд, байшингууд гарахгүй, Сарны орд ойролцоо байна.</p>
+      <p className="field-hint">Төрсний гэрчилгээн дээрх цагаа оруулаарай. Цагаа мэдэхгүй бол Мандах орд, байшингуудыг тооцохгүй. Сарны орд тодорхойгүй байж болно.</p>
       <PlaceFields cityId={form.cityId} place={form.place} onCity={(cityId) => change("cityId", cityId)} onPlace={(place) => change("place", place)} />
       <button className="button primary wide">Натал зургаа гаргах <ArrowRight aria-hidden="true" /></button>
       <p className="secure-note"><ShieldCheck aria-hidden="true" /> Орон нутгийн газрын жагсаалт · IANA цагийн түүх · Swiss Ephemeris-тэй тулгасан тооцоо</p>
@@ -151,12 +151,12 @@ export function NatalFlow() {
     </form>}
 
     {chart && <section id="chart-result" className="chart-result" tabIndex={-1} aria-labelledby="chart-title">
-      <button className="back-button" onClick={() => { setChart(null); setReading(null); setCheckout(false); setInvoice(null); }}><ArrowLeft aria-hidden="true" /> Мэдээлэл засах</button>
+      <button className="back-button" onClick={() => { setChart(null); setReading(null); setCheckout(false); setInvoice(null); }}><ArrowLeft aria-hidden="true" /> Мэдээллээ засах</button>
       <div className="chart-heading">
         <div>
           <p className="eyebrow">НАТАЛ ЗУРАГ · {chart.input.name.toUpperCase()}</p>
           <h1 id="chart-title">Таны төрсөн агшны тэнгэр</h1>
-          <p>{chart.input.birthDate} · {chart.input.unknownTime ? "төрсөн цаггүй" : chart.input.birthTime} · {chart.city.name}</p>
+          <p>{chart.input.birthDate} · {chart.input.unknownTime ? "төрсөн цаг тодорхойгүй" : chart.input.birthTime} · {chart.city.name}</p>
         </div>
         <span className="system-badge">{chart.houseSystem === "placidus" ? "ПЛАЦИДУС" : chart.houseSystem === "whole-sign" ? "БҮХЭЛ ОРД" : "ЦАГ ТОДОРХОЙГҮЙ"}</span>
       </div>
@@ -185,11 +185,11 @@ export function NatalFlow() {
         {!invoice
           ? <button className="button primary wide" disabled={busy || !config}>{busy ? "Бэлтгэж байна…" : config?.live ? "QPay-ээр төлөх" : "Туршилтын тайлал нээх"}</button>
           : <>
-            <div className="qr-area"><img src={`data:image/png;base64,${invoice.qr_image}`} alt="QPay төлбөрийн QR код" width={232} height={232} /><p>Банкны апп-аар QR кодыг уншуулна уу.</p></div>
+            <div className="qr-area"><img src={`data:image/png;base64,${invoice.qr_image}`} alt="QPay төлбөрийн QR код" width={232} height={232} /><p>Банкны аппын QR уншигчаар энэ кодыг уншуулна уу.</p></div>
             <BankLinks urls={invoice.urls} />
-            <p className="message warning">Давхар бүү төлөөрэй: төлбөр баталгаажих хүртэл хэдэн секунд хүлээгээд «Төлбөр шалгах»-ыг дарна уу.</p>
+            <p className="message warning">Төлбөр хийсэн бол дахин төлөх шаардлагагүй. Хэдэн секунд хүлээгээд «Төлбөрөө шалгах»-ыг дарна уу.</p>
             <p className="field-hint" role="status" aria-live="polite">Төлбөрийг 4 секунд тутам автоматаар шалгаж байна…</p>
-            <button type="button" className="button primary wide" disabled={busy} onClick={() => check()}>{busy ? "Шалгаж байна…" : "Төлбөр шалгах"}</button>
+            <button type="button" className="button primary wide" disabled={busy} onClick={() => check()}>{busy ? "Шалгаж байна…" : "Төлбөрөө шалгах"}</button>
           </>}
         {!config?.live && <p className="field-hint">Туршилтын горим: төлбөр авахгүй, имэйл илгээхгүй.</p>}
       </form>}

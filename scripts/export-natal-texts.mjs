@@ -6,7 +6,7 @@ import * as overview from "../lib/natal/content/overview.ts";
 import { PLANET_IN_HOUSE } from "../lib/natal/content/planets-in-houses.ts";
 import { PLANET_IN_SIGN } from "../lib/natal/content/planets-in-signs.ts";
 import { FREE_ASCENDANT, FREE_MOON, FREE_SUN, PAID_CONTENTS } from "../lib/natal/free.ts";
-import { CONTENT_VERSION } from "../lib/natal/reading.ts";
+import { CONTENT_VERSION, createNatalReading } from "../lib/natal/reading.ts";
 import { POINT_FORMS, POINT_ORDER, SIGN_GEN, house } from "../lib/natal/terms.ts";
 
 const out = [];
@@ -90,11 +90,9 @@ line("## 7. Кодоор угсардаг өгүүлбэрийн загвар");
 line();
 line("Дараах өгүүлбэрүүд тооцооны үр дүнгээс угсрагддаг (`lib/natal/reading.ts`). Нэр, тийн ялгалыг `lib/natal/terms.ts`-ээс авдаг тул дүрмийн алдаа гарахгүй байх ёстой; өгүүлбэрийн хэв загвар нь өөрөө зөв эсэхийг шалгана уу. Бодит жишээг `node --experimental-strip-types scripts/sample-natal-reading.mjs 1990-07-01 08:30 ulaanbaatar`-аар гаргаж уншина.");
 line();
-for (const text of [
-  "«Ангараг өөрийн ордод буюу Хонины ордод байгаа тул …»",
-  "«Нар Мэлхийн ордод, арван хоёрдугаар байшинд байгаа тул «дотоод ертөнц, ганцаардал, сүнслэг эрэл» гэсэн хүрээ таны амьдралын гол тайз болох хандлагатай.»",
-  "«Нэгдүгээр байшин — өөрийн төрх, бие даасан замнал. Оройн цэг нь Арслангийн ордод байгаа тул энэ хүрээнд та бахархалтай, өгөөмөр ханддаг.»",
-  "«Нар ба Плутоны трин: «хүсэл зориг ба гүн өөрчлөлт» хоорондоо эвтэй урсдаг.»",
-  "«Мандах орд ордын заагт ойрхон байна: төрсөн цаг 6 минутаар эрт байсан бол Мандах орд Мэлхийн орд болох байсан.»",
-]) line(`- ${text}`);
-console.log(out.join("\n"));
+const sample = createNatalReading({ name: "Хяналтын жишээ", birthDate: "1990-07-01", birthTime: "08:30", cityId: "ulaanbaatar", unknownTime: false });
+for (const id of ["chart-ruler", "house-1", "strengths", "challenges", "summary"]) {
+  const section = sample.sections.find((section) => section.id === id);
+  if (section) { line(`### ${section.title}`); line(); for (const text of section.paragraphs) { line(text); line(); } }
+}
+console.log(out.join("\n").trimEnd());

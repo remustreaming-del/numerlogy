@@ -6,6 +6,11 @@
     "node": ">=22.13.0"
   },
   "scripts": {
+    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs tests/mongolian.test.mjs",
+    "test:language": "node scripts/mongolian-quality.mjs && node --experimental-strip-types --test tests/mongolian.test.mjs tests/natal-content.test.mjs",
+    "lint:mongolian": "node scripts/mongolian-quality.mjs",
+    "spellcheck:mongolian": "node scripts/mongolian-quality.mjs --spelling",
+    "review:natal": "node --experimental-strip-types scripts/review-natal.mjs",
     "install:ci": "node scripts/install-ci.mjs",
     "dev": "node scripts/run-framework.mjs dev",
     "build": "node scripts/run-framework.mjs build",
@@ -55,9 +60,11 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
     "@vitejs/plugin-rsc": "0.5.26",
+    "dictionary-mn": "3.0.0",
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
     "eslint-config-next": "16.3.4",
+    "hunspell-asm": "4.0.2",
     "json-rpc-2.0": "1.7.1",
     "raw-body": "3.0.2",
     "react-server-dom-webpack": "19.2.6",

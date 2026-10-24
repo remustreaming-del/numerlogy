@@ -51,6 +51,16 @@
 - Verified on the deployed site that the natal card opens `/natal`, the brand returns home, and the Эцгийн код card opens `/etsgiin-kod`; browser console and page errors were clear.
 - Deployed Worker version `94937053-e8bb-44af-a36d-d85850ff5a20`.
 
+## Domain outage recovery · 2026-10-24
+
+- Both Google and Cloudflare public DNS returned NXDOMAIN for `numpath.site`; the `.site` registry RDAP endpoint returned 404 and reported the domain available for registration. Cloudflare's existing zone and Worker custom-domain bindings remained present.
+- The deployed app returned HTTP 200 over HTTPS when tested directly through the Cloudflare IP, confirming that this outage was caused by the missing domain registration/delegation.
+- Created the account subdomain `numpath-toono.workers.dev` and enabled the existing `toono` Worker's recovery route: `https://toono.numpath-toono.workers.dev`. HTTPS activation was verified before handoff.
+- Updated the production `PUBLIC_ORIGIN` secret to the recovery HTTPS origin so new QPay invoices use reachable callback URLs and natal email PDF font downloads work. No invoice, payment, or email was generated during verification. Existing invoices retain their original callback URL and can still use browser polling.
+- Added `workers_dev: true` to own-account Vite configuration to preserve the recovery route during future deployments, and documented recovery in README.
+- Verified the recovery homepage, both product routes, config API, native product navigation, and free natal chart rendering with its SVG and table. Browser page errors: zero. TypeScript and diff checks passed.
+- The owner must resolve the domain registration with Namecheap and restore the assigned nameservers before the original address can work again. After restoration, set `PUBLIC_ORIGIN` back to `https://www.numpath.site`. The numerology email template still references that original address for PDF recovery instructions.
+
 ## Owner review
 
 1. Proofread `outputs/natal-texts-for-review.md`.

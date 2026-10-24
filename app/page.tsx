@@ -5,20 +5,20 @@ import { Starfield } from "@/components/starfield";
 
 const products = [
   {
+    href: "/natal",
+    eyebrow: "Төрсөн өдрөө шалгах",
+    title: "Натал зураг",
+    description: "Гараг, орд, байшингуудын бодит байрлалаар таны төрсөн агшны тэнгэрийн зургийг гаргана.",
+    price: "Зураг үнэгүй · Бүрэн тайлал ₮20,000",
+    icon: Orbit,
+  },
+  {
     href: "/etsgiin-kod",
     eyebrow: "81 хослол · Бүрэн тайлал",
     title: "Эцгийн код",
     description: "Аав болон таны төрсөн огнооны бэлгэдлийн холбоог тайлж, эд баялагтай харилцах хэв маягаа эргэцүүлээрэй.",
     price: "₮10,000",
     icon: GitBranch,
-  },
-  {
-    href: "/natal",
-    eyebrow: "Төрсөн өдрөө шалгах",
-    title: "Натал чарт",
-    description: "Гараг, орд, гэрүүдийн бодит байрлалаар таны төрсөн агшны тэнгэрийн зургийг үнэ төлбөргүй гаргана.",
-    price: "Зураг үнэгүй · Бүрэн тайлал ₮20,000",
-    icon: Orbit,
   },
 ] as const;
 
@@ -28,9 +28,8 @@ export default function Home() {
     <SiteHeader />
     <main id="main-content" className="landing-main">
       <section className="landing-hero" aria-labelledby="landing-title">
-        <p className="eyebrow">ӨӨРИЙГӨӨ УНШИХ ХОЁР ЗАМ</p>
-        <h1 id="landing-title">Таны түүх тоо ба<br />тэнгэрт зэрэг бичигдсэн.</h1>
-        <p>Тоон бэлгэдэл болон төрсөн агшны одон орны байрлалыг тайван, ойлгомжтой хэлээр уншина.</p>
+        <p className="eyebrow">ӨӨРИЙГӨӨ ТАНИН МЭДЭХ</p>
+        <h1 id="landing-title">Natal Chart-аа <br /> мэдэж аваарай</h1>
       </section>
       <section className="product-grid" aria-label="Үйлчилгээ сонгох">
         {products.map(({ href, eyebrow, title, description, price, icon: Icon }, index) => <a href={href} className="product-card" key={href}>

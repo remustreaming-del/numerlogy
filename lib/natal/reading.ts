@@ -16,7 +16,7 @@ import {
   house, inSign, signPhrase, type Element, type PlanetId, type PointId,
 } from "./terms.ts";
 
-export const CONTENT_VERSION = "2026-10-23.v2";
+export const CONTENT_VERSION = "2026-10-24.v3";
 
 export { READING_GROUPS, type NatalReading, type ReadingGroup, type ReadingSection };
 
@@ -131,11 +131,11 @@ function overviewSections(chart: NatalChart): ReadingSection[] {
     const ruler = SIGN_RULER[chart.ascendant.signIndex];
     const position = chart.planets.find((planet) => planet.id === ruler)!;
     const rulerParagraphs = [CHART_RULER_INTRO, CHART_RULER[ruler as keyof typeof CHART_RULER]];
-    rulerParagraphs.push(`${POINT_FORMS[ruler].nom} ${inSign(position.signIndex)}, ${house(position.house!).dat} байгаа тул «${HOUSE_THEME[position.house! - 1]}» гэсэн хүрээ таны амьдралын гол тайз болох хандлагатай.`);
+    rulerParagraphs.push(`${POINT_FORMS[ruler].nom} ${inSign(position.signIndex)}, ${house(position.house!).dat} байгаа тул «${HOUSE_THEME[position.house! - 1]}» гэсэн сэдэв таны амьдралд чухал байр эзлэх хандлагатай.`);
     const modern = SIGN_MODERN_RULER[chart.ascendant.signIndex];
     if (modern) {
       const co = chart.planets.find((planet) => planet.id === modern)!;
-      rulerParagraphs.push(`Орчин үеийн астрологид ${POINT_FORMS[modern].nom} гарагийг мөн энэ ордын хамтран эзэн гэж үздэг. ${POINT_FORMS[modern].nom} ${house(co.house!).dat} байгаа нь «${HOUSE_THEME[co.house! - 1]}» гэсэн хүрээг мөн тодотгоно.`);
+      rulerParagraphs.push(`Орчин үеийн астрологид ${POINT_FORMS[modern].acc} мөн энэ ордын нэмэлт эзэн гараг гэж үздэг. ${POINT_FORMS[modern].nom} ${house(co.house!).dat} байгаа нь «${HOUSE_THEME[co.house! - 1]}» гэсэн хүрээг мөн тодотгоно.`);
     }
     sections.push({ id: "chart-ruler", group: "overview", title: "Зургийн эзэн гараг", meta: `${POINT_FORMS[ruler].nom} · ${placementMeta(position)}`, paragraphs: rulerParagraphs });
   }
@@ -233,8 +233,8 @@ function houseSections(chart: NatalChart): ReadingSection[] {
 
 // ---------------------------------------------------------------- synthesis
 
-const STRENGTH_TONES = ["хоорондоо эвтэй урсдаг", "бие биеэ аяндаа дэмждэг", "гэсэн хослол танд амархан ирдэг нөөц"];
-const CHALLENGE_TONES = ["хоорондоо хурцадмал ч энэ нь таныг хөгжүүлдэг", "хоорондын үрэлт таныг үйлдэлд түлхдэг", "гэсэн сэдэв амьдралын туршид тань дахин дахин сорилт болж, улмаар ур чадвар болно"];
+const STRENGTH_TONES = ["хоорондоо зохицох хандлагатай", "бие биеэ дэмждэг", "гэсэн хоёр чанарыг хослуулах нь танд амар байж болно"];
+const CHALLENGE_TONES = ["хоорондоо зөрчилдөж болох тул хоёуланг нь анзаарах хэрэгтэй", "хоорондын зөрчлийг шийдэхдээ та өөрийн арга барилыг олж болно", "гэсэн хоёр хэрэгцээг зохицуулж сурах нь танд сорилт байж болно"];
 
 function dignityGroups(chart: NatalChart, kinds: ("domicile" | "exaltation" | "detriment" | "fall")[]) {
   return kinds.map((kind) => ({ kind, names: chart.planets.filter((planet) => planet.dignity === kind).map((planet) => planet.name) })).filter((item) => item.names.length);
@@ -261,7 +261,7 @@ function synthesisSections(chart: NatalChart): ReadingSection[] {
   const sunElement = SIGN_ELEMENT[sun.signIndex], moonElement = SIGN_ELEMENT[moon.signIndex];
   const summary = [`Нэгтгэн хэлбэл, таны амьдралын төв болох Нар «${SIGN_KEYWORDS[sun.signIndex]}», сэтгэлийн хэрэгцээ болох Сар «${SIGN_KEYWORDS[moon.signIndex]}»${chart.ascendant ? `, бусадтай уулзах хаалга болох Мандах орд «${SIGN_KEYWORDS[chart.ascendant.signIndex]}»` : ""} гэсэн чанарыг тээдэг.`];
   summary.push(sunElement === moonElement
-    ? `Нар, Сар хоёулаа ${ELEMENT_NAMES[sunElement].gen} махбодын ордод байгаа тул хүсэл ба мэдрэмж тань нэг хэлээр ярьдаг. Энэ нэгдмэл байдал танд тод чиглэл өгөх ч бусад махбодын өнцгийг ч ухамсартайгаар нэмэх нь тустай.`
+    ? `Нар, Сар хоёулаа ${ELEMENT_NAMES[sunElement].gen} махбодын ордод байгаа тул хүсэл ба мэдрэмж тань нэг хэлээр ярьдаг. Энэ нэгдмэл байдал танд тод чиглэл өгөх ч бусад махбодын бэлгэдэх чанарт ч анхаарах нь тустай.`
     : `Нар ${ELEMENT_NAMES[sunElement].gen}, Сар ${ELEMENT_NAMES[moonElement].gen} махбодын ордод байгаа тул хүсэл тань «${FREE_ELEMENT[sunElement]}», сэтгэл тань «${FREE_ELEMENT[moonElement]}» гэсэн өөр хэрэгцээтэй. Энэ хоёрыг хоёуланг нь хүндэтгэх нь таны дотоод тэнцвэрийн түлхүүр.`);
   summary.push(...READING_COPY.closing);
 
