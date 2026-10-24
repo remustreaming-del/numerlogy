@@ -1,11 +1,21 @@
 # Toono
 
-A Mongolian-first, dark celestial site with two products:
+A Mongolian-first, dark celestial site with three products:
 
 - `/etsgiin-kod` — father/child numerology report, **₮10,000**.
 - `/natal` — free natal wheel plus Sun, Moon, and Ascendant; full reading and PDF, **₮20,000**.
+- `/khos` — couple compatibility (synastry): free bi-wheel and scores; full reading, PDF and email, **₮30,000**.
 
-The landing route `/` presents both products. Prices are independent server constants in `lib/server.ts`.
+The landing route `/` presents all three products. Prices are independent server constants in `lib/server.ts`.
+
+## Couple reading (Хосын зурхай)
+
+- Engine (client-safe): `lib/couple/synastry.ts`. Two natal charts from the same engine; 48 cross-chart pairs (personal points with each other, with Jupiter/Saturn, and outer planets with Sun, Moon, Venus, Mars, ASC). Synastry orbs 7/6/4°, +1° with a luminary, −1° with an outer planet or the Ascendant. Midpoint composite (shorter arc), house overlays (Sun, Moon, Venus, Mars) and life path numbers.
+- Scores: five dimensions (emotion, attraction, communication, stability, values), a tension index and an overall score. Each is a **percentile against 20,000 simulated couples** per birth-time case (`lib/couple/calibration.ts`; run `npm run calibrate:couple` whenever weights change). The reading names the aspects behind every score.
+- Unknown birth time: no ASC contacts or overlays for that person; Moon contacts are flagged approximate and weigh half.
+- Paid reading (server only): `lib/couple/reading.ts` assembles ~55 sections from `lib/couple/content/*` (cross aspects, partner profiles, sign links, overlays, composite, life path, conflict and repair guidance). The whole reading is stored in `orders.chart_json` with product `couple`, so no migration is needed. Preview: `POST /api/couple/preview` (payments off only); checkout: `POST /api/couple/orders`.
+- Names are never declined: texts address «та хоёр» and use «Нарны тал» roles; names appear only in titles and meta lines.
+- Proofreading: `node --experimental-strip-types scripts/sample-couple-reading.mjs 1990-07-01 08:30 ulaanbaatar 1992-03-14 21:10 darkhan` (`-` for an unknown time). `tests/couple.test.mjs` checks engine accuracy, content coverage, language rules and 300 generated readings.
 
 ## Natal calculation
 
@@ -42,7 +52,7 @@ QPAY_SANDBOX=true
 
 For delivery through Resend, also set `RESEND_API_KEY` and `EMAIL_FROM`. Natal email includes the full reading and attempts to attach the generated PDF. If PDF attachment generation fails, the reading email still sends and the authenticated report page remains downloadable.
 
-Payment callbacks use a random hashed callback key and confirm the invoice server-to-server. Browser polling is a fallback when a callback is late. Access tokens are hashed in D1; unpaid orders never return report content.
+Payment callbacks use a random hashed callback key and confirm the invoice server-to-server. Browser polling is a fallback when a callback is late. A scheduled job retries failed or abandoned report emails every five minutes (one report per run to stay within the Worker CPU budget), even after the customer closes the page. The report page confirms email submission only after Resend accepts it. Access tokens are hashed in D1; unpaid orders never return report content.
 
 ## Local development
 

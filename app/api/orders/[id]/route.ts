@@ -8,7 +8,9 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
   const order = await confirmPaymentThrottled(found);
   // Fallback when the QPay callback could not send the email; deliverReport is idempotent.
   if (order.status === "paid" && order.emailStatus !== "sent") await deliverReport(order);
+  const latest = await authorizedOrder(req, id);
   return json({ id, status: order.status, amount: order.amount, email: order.email, emailEnabled: emailReady(),
+    emailStatus: latest?.emailStatus ?? null,
     invoice: order.invoiceJson ? JSON.parse(order.invoiceJson) : null,
     report: order.status === "paid" ? orderReport(order) : null,
   });

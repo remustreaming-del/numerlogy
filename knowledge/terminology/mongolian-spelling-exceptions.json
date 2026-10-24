@@ -1,34 +1,122 @@
 [
   {
     "reason": "Astrology and numerology loanwords used in the existing editorial vocabulary; exact forms only, no wildcard suffixes.",
-    "words": ["архетип", "архетипт", "аспектууд", "амбиц", "идеалч", "идеалчлах"]
+    "words": [
+      "архетип",
+      "архетипт",
+      "аспектууд",
+      "амбиц",
+      "идеалч",
+      "идеалчлах"
+    ]
   },
   {
     "reason": "Forms of the approved astronomy term гараг missing from the packaged dictionary; see https://mongoltoli.mn/dictionary/detail/23116.",
-    "words": ["гарагаараа", "гараггүй", "гарагууд", "гарагуудтай", "гарагуудын"]
+    "words": [
+      "гарагаараа",
+      "гараггүй",
+      "гарагууд",
+      "гарагуудтай",
+      "гарагуудын"
+    ]
   },
   {
     "reason": "Forms of бэлгэдэл / бэлгэдэх; the spelling is retained in the official dictionary: https://toli.gov.mn/w/PSAKjShaoXtHNAmE.",
-    "words": ["бэлгэддэг", "бэлгэдлийн", "бэлгэдлээр", "бэлгэднэ", "бэлгэдэл", "бэлгэдэлд", "бэлгэдэлтэй", "бэлгэдэх"]
+    "words": [
+      "бэлгэддэг",
+      "бэлгэдлийн",
+      "бэлгэдлээр",
+      "бэлгэднэ",
+      "бэлгэдэл",
+      "бэлгэдэлд",
+      "бэлгэдэлтэй",
+      "бэлгэдэх"
+    ]
   },
   {
     "reason": "Contracted habitual participles before -ийг. Do not restore the dropped vowel just to satisfy Hunspell.",
-    "words": ["асдгийг", "илэрхийлэгддгийг", "нээгддгийг", "татдгийг", "тодорхойлогддгийг", "тусдгийг", "тэжээгддгийг", "ханддгийг", "харагддгийг", "хэлбэрждгийг"]
+    "words": [
+      "асдгийг",
+      "илэрхийлэгддгийг",
+      "нээгддгийг",
+      "татдгийг",
+      "тодорхойлогддгийг",
+      "тусдгийг",
+      "тэжээгддгийг",
+      "ханддгийг",
+      "харагддгийг",
+      "хэлбэрждгийг"
+    ]
   },
   {
     "reason": "Ordinal numerals and independent directive particles used in the house vocabulary.",
-    "words": ["долоодугаар", "зургаадугаар", "руу", "рүү"]
+    "words": [
+      "долоодугаар",
+      "зургаадугаар",
+      "руу",
+      "рүү"
+    ]
   },
   {
     "reason": "Existing inflected common nouns and pronouns missed by dictionary-mn 3.0.0; individually enumerated for editorial review, not a general suffix exemption.",
-    "words": ["батжина", "бүрт", "бүртээ", "гайхшруулах", "гайхшруулж", "гарвалтай", "гүйцэл", "дотны", "дотныхныхоо", "дотныхондоо", "дотныхоо", "нөхцлөөс", "нөхөддөө", "олзоос", "олзын", "олонтаа", "совиноор", "совиноороо", "тайлалыг", "татагдал", "түвшинд", "хомсдолд", "хомсдолоо", "хомсдолоос", "хомсдолын", "хомсдоход", "хоёуланг", "хоёуланд", "цэнийн", "цэнэтэй", "өргөжинө"]
+    "words": [
+      "батжина",
+      "бүрт",
+      "бүртээ",
+      "гайхшруулах",
+      "гайхшруулж",
+      "гарвалтай",
+      "гүйцэл",
+      "дотны",
+      "дотныхныхоо",
+      "дотныхондоо",
+      "дотныхоо",
+      "нөхцлөөс",
+      "нөхөддөө",
+      "олзоос",
+      "олзын",
+      "олонтаа",
+      "совиноор",
+      "совиноороо",
+      "тайлалыг",
+      "татагдал",
+      "түвшинд",
+      "хомсдолд",
+      "хомсдолоо",
+      "хомсдолоос",
+      "хомсдолын",
+      "хомсдоход",
+      "хоёуланг",
+      "хоёуланд",
+      "цэнийн",
+      "цэнэтэй",
+      "өргөжинө"
+    ]
   },
   {
     "reason": "эрсдэл and its case forms are retained; attested in the Bank of Mongolia's terminology dictionary at https://etoli.mn/.",
-    "words": ["эрсдэл", "эрсдэлд", "эрсдэлийг", "эрсдэлийн", "эрсдэлтэй", "эрсдэлээс"]
+    "words": [
+      "эрсдэл",
+      "эрсдэлд",
+      "эрсдэлийг",
+      "эрсдэлийн",
+      "эрсдэлтэй",
+      "эрсдэлээс"
+    ]
   },
   {
     "reason": "Genitive forms of the year animals Хулгана and Мичин written at sentence start in lib/natal/content/mongol-year.ts; the lower-case forms are missing from the packaged dictionary.",
-    "words": ["хулганы", "мичингийн"]
+    "words": [
+      "хулганы",
+      "мичингийн"
+    ]
+  },
+  {
+    "reason": "Хосын зурхайн нэр томьёо: синастри (synastry) ба квинконс (quincunx, 150° буюу тав ордын зай) нь олон улсын астрологийн нэр томьёоны галиг; Hunspell толь бичигт байхгүй.",
+    "words": [
+      "синастри",
+      "квинконс",
+      "квинконсын"
+    ]
   }
 ]

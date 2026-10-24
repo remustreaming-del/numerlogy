@@ -10,7 +10,7 @@ const point = (longitude: number, radius: number, rotation: number) => {
 };
 
 /** Pushes glyphs apart along the ring so no two discs overlap (min 9° apart), keeping order. */
-function spreadGlyphs(points: PlanetPosition[], minGap = 9) {
+export function spreadGlyphs(points: PlanetPosition[], minGap = 9) {
   const sorted = [...points].sort((a, b) => a.longitude - b.longitude);
   const placed = sorted.map((item) => ({ id: item.id, at: item.longitude }));
   for (let pass = 0; pass < 6; pass++) {

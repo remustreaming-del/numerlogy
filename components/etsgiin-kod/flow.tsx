@@ -10,7 +10,7 @@ import { lifePath, numberTitles, pad, pairHeading } from "@/lib/codes";
 
 type Invoice = { id: string; amount: number; qr_image: string; urls: BankLink[] };
 type Saved = { id: string; token: string };
-type OrderResponse = { status: string; report: Report; invoice: Invoice; amount: number; email: string | null; emailEnabled: boolean };
+type OrderResponse = { status: string; report: Report; invoice: Invoice; amount: number; email: string | null; emailEnabled: boolean; emailStatus: string | null };
 type Step = "dates" | "details" | "pay" | "report";
 const storageKey = "toono-etsgiin-kod-v2";
 const money = (amount: number) => new Intl.NumberFormat("mn-MN", { style: "currency", currency: "MNT", maximumFractionDigits: 0 }).format(amount);
@@ -31,7 +31,7 @@ export function EtsgiinKodFlow() {
   const attempt = useRef<{ fingerprint: string; order: Saved } | null>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
 
-  function unlock(data: OrderResponse) { setReport(data.report); setStep("report"); setNotice(data.emailEnabled && data.email ? `Тайланг ${data.email} хаяг руу илгээлээ.` : ""); }
+  function unlock(data: OrderResponse) { setReport(data.report); setStep("report"); setNotice(data.emailStatus === "sent" && data.email ? `Тайланг ${data.email} хаяг руу илгээлээ.` : ""); }
 
   useEffect(() => {
     fetch("/api/config").then((response) => response.json() as Promise<{ live: boolean; etsgiinPrice: number }>).then(setConfig).catch(() => setError("Төлбөрийн тохиргоог ачаалж чадсангүй."));

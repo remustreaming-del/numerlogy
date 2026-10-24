@@ -19,7 +19,7 @@ import { downloadFile } from "@/lib/pdf";
 type Invoice = { id: string; amount: number; qr_image: string; urls: BankLink[] };
 type Saved = { id: string; token: string };
 type Config = { live: boolean; natalPrice: number };
-type OrderResponse = { status: string; amount: number; invoice: Invoice | null; report: NatalReading | null; email: string | null; emailEnabled: boolean };
+type OrderResponse = { status: string; amount: number; invoice: Invoice | null; report: NatalReading | null; email: string | null; emailEnabled: boolean; emailStatus: string | null };
 type FormState = Omit<NatalInput, "place"> & { place: CustomPlace };
 
 const storageKey = "toono-natal-v1";
@@ -66,7 +66,7 @@ export function NatalFlow() {
       if (document.hidden) return;
       try {
         const data = await api<OrderResponse>(`/api/orders/${saved.id}`, { headers: { Authorization: `Bearer ${saved.token}` } });
-        if (data.status === "paid" && data.report) { setReading(data.report); setCheckout(false); setNotice(data.emailEnabled && data.email ? `Бүрэн тайлалыг ${data.email} хаяг руу илгээлээ.` : "Төлбөр баталгаажлаа."); }
+        if (data.status === "paid" && data.report) { setReading(data.report); setCheckout(false); setNotice(data.emailStatus === "sent" && data.email ? `Бүрэн тайлалыг ${data.email} хаяг руу илгээлээ.` : "Төлбөр баталгаажлаа."); }
       } catch { /* the manual check button remains */ }
     }, 4000);
     return () => clearInterval(timer);

@@ -32,6 +32,7 @@ const localBindingConfig = {
       }
     : {}),
   compatibility_flags: ["nodejs_compat"],
+  triggers: { crons: ["*/5 * * * *"] },
   d1_databases: d1
     ? [
         {

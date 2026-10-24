@@ -1,4 +1,4 @@
-import { ArrowUpRight, GitBranch, Orbit } from "lucide-react";
+import { ArrowUpRight, GitBranch, HeartHandshake, Orbit } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Starfield } from "@/components/starfield";
@@ -11,6 +11,14 @@ const products = [
     description: "Гараг, орд, байшингуудын бодит байрлалаар таны төрсөн агшны тэнгэрийн зургийг гаргана.",
     price: "Зураг үнэгүй · Бүрэн тайлал ₮20,000",
     icon: Orbit,
+  },
+  {
+    href: "/khos",
+    eyebrow: "Хоёр хүний зураг",
+    title: "Хосын зурхай",
+    description: "Хоёр хүний төрсөн агшны тэнгэрийг давхарлаж, сэтгэл, татал, ойлголцол, маргааны хэв маягаа тайлуулаарай.",
+    price: "Оноо үнэгүй · Бүрэн тайлал ₮30,000",
+    icon: HeartHandshake,
   },
   {
     href: "/etsgiin-kod",

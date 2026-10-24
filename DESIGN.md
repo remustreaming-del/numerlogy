@@ -78,5 +78,9 @@ Mongolian copy is calm, direct, and non-deterministic. Interpretations describe 
 - Эцгийн код: `ETSGIIN_PRICE_MNT = 10000`
 - Натал зураг wheel + Sun/Moon/Ascendant: free
 - Натал бүрэн тайлал: `NATAL_PRICE_MNT = 20000`
+- Хосын зурхай bi-wheel + оноо: free
+- Хосын зурхай бүрэн тайлал: `COUPLE_PRICE_MNT = 30000` (two charts and ~55 sections: above one natal reading, below two)
+
+The couple bi-wheel keeps person A in gold (inner ring, houses) and person B in violet (outer ring); the cross-aspect table beside it is the accessible source.
 
 These are separate server-side constants in `lib/server.ts`; client-supplied amounts are ignored.

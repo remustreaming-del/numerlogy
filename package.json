@@ -6,11 +6,12 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "test": "node --experimental-strip-types --test tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs tests/mongolian.test.mjs tests/forecast.test.mjs",
-    "test:language": "node scripts/mongolian-quality.mjs && node --experimental-strip-types --test tests/mongolian.test.mjs tests/natal-content.test.mjs",
+    "test": "node --experimental-strip-types --test tests/email.test.mjs tests/core.test.mjs tests/natal.test.mjs tests/natal-content.test.mjs tests/mongolian.test.mjs tests/forecast.test.mjs tests/couple.test.mjs",
+    "test:language": "node scripts/mongolian-quality.mjs && node --experimental-strip-types --test tests/mongolian.test.mjs tests/natal-content.test.mjs tests/couple.test.mjs",
     "lint:mongolian": "node scripts/mongolian-quality.mjs",
     "spellcheck:mongolian": "node scripts/mongolian-quality.mjs --spelling",
     "review:natal": "node --experimental-strip-types scripts/review-natal.mjs",
+    "calibrate:couple": "node --experimental-strip-types scripts/calibrate-couple.mjs 20000",
     "install:ci": "node scripts/install-ci.mjs",
     "dev": "node scripts/run-framework.mjs dev",
     "build": "node scripts/run-framework.mjs build",

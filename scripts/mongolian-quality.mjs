@@ -57,7 +57,7 @@ export async function sourceRecords() {
   return records;
 }
 
-export const isContentFile = (file) => /^lib\/natal\/(content\/|free\.ts$)/.test(file) || file === "lib/content.ts";
+export const isContentFile = (file) => /^lib\/(natal|couple)\/(content\/|free\.ts$)/.test(file) || file === "lib/content.ts";
 let dictionary;
 async function loadDictionary() {
   const factory = await loadModule();

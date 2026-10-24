@@ -237,7 +237,7 @@ function signParts(longitude: number) {
   return { signIndex, sign: SIGN_NAMES[signIndex], signGlyph: SIGN_GLYPHS[signIndex], degree, minute };
 }
 
-function houseFor(longitude: number, cusps: number[]) {
+export function houseFor(longitude: number, cusps: number[]) {
   const value = normalize(longitude - cusps[0]);
   let house = 1;
   for (let index = 0; index < 12; index++) if (normalize(cusps[index] - cusps[0]) <= value) house = index + 1;

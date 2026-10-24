@@ -9,6 +9,7 @@ export function SiteHeader() {
     <nav aria-label="Үндсэн цэс">
       <a href="/etsgiin-kod">Эцгийн код</a>
       <a href="/natal">Натал зураг</a>
+      <a href="/khos">Хосын зурхай</a>
     </nav>
   </header>;
 }
